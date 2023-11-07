@@ -1,0 +1,77 @@
+
+.user-form {
+    background-color: rgb(193, 219, 222);
+    font-family: Lato, "Helvetica Neue", Arial, Helvetica, sans-serif !important;
+    min-height: 30vh;
+    margin-top: 25px;
+    margin-left: 2%;
+    border-radius: .28571429rem;
+    border: 2px solid rgba(34, 36, 38, .15);
+    display: flex;
+    flex-direction: column;
+    width: 95%;
+    align-items: center;
+    padding: 1rem 1rem;
+    overflow: hidden !important;
+}
+
+
+.login-btn {
+    font-family: Lato, "Helvetica Neue", Arial, Helvetica, sans-serif !important;
+    background-color: #1678C2 !important;
+    font-size: 14px;
+    font-weight: 700 !important;
+}
+
+.cop-logo {
+    height: 300px !important;
+    width: 600px !important;
+
+}
+
+@media screen and (max-width: 768px) {
+    .user-form {
+
+        background-color: rgb(193, 219, 222);
+        font-family: Lato, "Helvetica Neue", Arial, Helvetica, sans-serif !important;
+        min-height: auto !important;
+        margin-top: 20% !important;
+        margin-left: 2%;
+        border-radius: .28571429rem;
+        border: 2px solid rgba(34, 36, 38, .15);
+        display: flex;
+        flex-direction: column;
+        width: 95%;
+        align-items: center;
+        padding: 1rem 1rem;
+        overflow: hidden !important;
+    }
+
+    .cop-logo {
+        width: 250px !important;
+        height: 180px !important;
+    }
+}
+@media screen and (max-width: 280px) {
+    .user-form {
+
+        background-color: rgb(193, 219, 222);
+        font-family: Lato, "Helvetica Neue", Arial, Helvetica, sans-serif !important;
+        min-height: auto !important;
+        margin-top: 20% !important;
+        margin-left: 2%;
+        border-radius: .28571429rem;
+        border: 2px solid rgba(34, 36, 38, .15);
+        display: flex;
+        flex-direction: column;
+        width: 95%;
+        align-items: center;
+        padding: 1rem 1rem;
+        overflow: hidden !important;
+    }
+
+    .cop-logo {
+        width: 200px !important;
+        height: 180px !important;
+    }
+}
