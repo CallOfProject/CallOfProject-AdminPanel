@@ -1,9 +1,12 @@
 import './AdminPage.css'
+import SummaryInformationComponent from "./SummaryInformationComponent";
+import DrillDownChartComponent from "./DrillDownChartComponent";
 
 const AdminMainPageComponent = () => {
     return (
         <div className="admin-page-root">
-            fds
+            <SummaryInformationComponent/>
+            <DrillDownChartComponent/>
         </div>
     );
 }

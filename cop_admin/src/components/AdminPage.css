@@ -1,4 +1,23 @@
 .admin-page-root {
-    border-style: solid;
+    margin-top: 1%;
+    height: auto;
+    width: auto;
+    float: left;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /*border-style: solid;*/
+}
 
+.admin-page-card-root {
+}
+
+.card-header {
+    font-weight: 700;
+    font-size: 15pt;
+}
+
+.cop-card {
+    width: 18rem;
+    margin: 0 20px;
 }

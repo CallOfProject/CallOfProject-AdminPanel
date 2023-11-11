@@ -2,18 +2,18 @@ import AdminMainPageComponent from "./AdminMainPageComponent";
 import SidebarComponent from "./SidebarComponent";
 import ContextProvider from "./ContextProvider";
 import './MainPage.css'
+import {Col} from "react-bootstrap";
 
 const MainPage = () => {
     return (
         <ContextProvider>
-            <div className="main-page-root">
-                <div className="main-page-side-bar">
+            <div>
+                <Col className="main-page-side-bar">
                     <SidebarComponent/>
-                </div>
-
-                <div className="main-page-admin">
+                </Col>
+                <Col className="main-page-admin">
                     <AdminMainPageComponent/>
-                </div>
+                </Col>
             </div>
         </ContextProvider>
     )

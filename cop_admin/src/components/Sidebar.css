@@ -67,3 +67,13 @@ main {
 .scrollarea {
     overflow-y: auto;
 }
+
+@media (max-width: 767px) {
+    .sidebar {
+        width: 100%; /* Make the sidebar full-width on smaller screens */
+    }
+
+    .btn-toggle-nav a {
+        margin-left: 0; /* Remove left margin on smaller screens */
+    }
+}

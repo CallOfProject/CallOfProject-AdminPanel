@@ -1,25 +1,20 @@
-.main-page-root {
-    left: 0;
-    top: 0;
-    width: 100% !important;
-    height: 100vh !important;
-    border-style: solid;
-    border-color: green;
-}
+
 
 .main-page-side-bar {
+    float: left;
+    width: 20%;
     background-color: rgb(154, 179, 182) !important;
-    margin-right: 80%;
-    height: 99vh;
-    border-style: solid;
-    border-color: red;
+    height: 100vh;
+    /*border-style: solid;*/
+    /*border-color: black;*/
 }
 
 .main-page-admin {
-    margin-top: -820px;
-    height: 98vh;
-    margin-left: 21%;
-    border-style: solid;
-    border-color: brown;
+    float: right;
+    width: 79.5% !important;
+    height: 100vh;
+    margin-left: 3px;
+    /*border-style: solid;*/
+    /*border-color: brown;*/
 }
 
