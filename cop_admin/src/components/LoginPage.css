@@ -52,6 +52,7 @@
         height: 180px !important;
     }
 }
+
 @media screen and (max-width: 280px) {
     .user-form {
 

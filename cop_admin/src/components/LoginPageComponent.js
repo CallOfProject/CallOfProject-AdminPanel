@@ -3,24 +3,49 @@ import {FormControl, InputGroup, Stack} from "react-bootstrap";
 import {Status} from "../Status";
 import "./LoginPage.css"
 import cop_logo from '../images/cop_logo.png'
+import LoginService from "../service/LoginService";
+import {UserLoginDTO} from "../dto/UserLoginDTO";
+import {UserDTO} from "../dto/UserDTO";
+import {Navigate} from "react-router-dom";
 
 const LoginPageComponent = () => {
-    const [serviceUrl, setServiceUrl] = useState("")
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
-    const [serviceUrlValidation, setServiceUrlValidation] = useState(Status.NONE)
     const [usernameValidation, setUsernameValidation] = useState(Status.NONE)
     const [passwordValidation, setPasswordValidation] = useState(Status.NONE)
     const [success, setSuccess] = useState(false)
 
-    const HandleServiceUrl = (event) => setServiceUrl(event.target.value);
     const HandleUsername = (event) => setUsername(event.target.value);
     const HandlePassword = (event) => setPassword(event.target.value);
 
+    const HandleLoginButton = async (event) => {
+        event.preventDefault()
+        setUsernameValidation(username.length !== 0 ? Status.SUCCESS : Status.FAIL)
+        setPasswordValidation(password.length !== 0 ? Status.SUCCESS : Status.FAIL)
+
+        if (usernameValidation === Status.SUCCESS && passwordValidation === Status.SUCCESS) {
+            const loginDTO = new UserLoginDTO(username, password);
+
+            const loginResponse = await LoginService(loginDTO);
+
+            if (loginResponse.success) {
+                const user = new UserDTO(username, loginResponse.accessToken, loginResponse.refreshToken)
+                user.storeOnLocalStorage()
+                setSuccess(true)
+                console.log(loginResponse)
+            } else {
+                setSuccess(false)
+                console.log(loginResponse)
+            }
+        } else {
+            // alert
+        }
+
+    };
     return (
         <div className="container-fluid cop-container">
             <div className="user-form">
-                {/*{success && <Navigate to="/home"/>}*/}
+                {success && <Navigate to="/home"/>}
                 <Stack gap={3}>
                     <h2 style={{textAlign: "center"}}>
                         <img className="mb-4 cop-logo" src={cop_logo} alt=""/>
@@ -37,7 +62,7 @@ const LoginPageComponent = () => {
                             onChange={HandleUsername}
                             required
                             isInvalid={usernameValidation === Status.FAIL && usernameValidation !== Status.NONE}
-                            /*isValid={usernameValidation === Status.SUCCESS && usernameValidation !== Status.NONE}*/
+                            isValid={usernameValidation === Status.SUCCESS && usernameValidation !== Status.NONE}
                             placeholder="username"
                             aria-label="username"
                         />
@@ -63,7 +88,7 @@ const LoginPageComponent = () => {
                             onChange={HandlePassword}
                             required
                             isInvalid={passwordValidation === Status.FAIL && passwordValidation !== Status.NONE}
-                            /*isValid={passwordValidation === Status.SUCCESS && passwordValidation !== Status.NONE}*/
+                            isValid={passwordValidation === Status.SUCCESS && passwordValidation !== Status.NONE}
                             placeholder="password"
                             aria-label="password"
                         />
@@ -72,8 +97,8 @@ const LoginPageComponent = () => {
                         </FormControl.Feedback>
                     </InputGroup>
 
-                    {/*onClick={HandleLoginButton}*/}
-                    <button className="btn btn-primary w-100 py-2 login-btn"
+
+                    <button className="btn btn-primary w-100 py-2 login-btn" onClick={HandleLoginButton}
                             type="submit">Login
                     </button>
 
