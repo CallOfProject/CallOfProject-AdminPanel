@@ -7,7 +7,13 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import React from "react";
 import './SearchAndFilter.css'
 
-const SearchAndFilterComponent = () => {
+const SearchAndFilterComponent = ({word, setWord, isClickSearch, setIsClickSearch}) => {
+    const handleSearchButton = () => {
+        setIsClickSearch(true)
+    };
+    const SearchField = (event) => {
+        setWord(event.target.value)
+    };
     return (
         <Navbar expand="lg" style={{backgroundColor: "rgb(154, 179, 182)", color: "black"}}>
             <Container fluid>
@@ -40,8 +46,9 @@ const SearchAndFilterComponent = () => {
                             placeholder="Search"
                             className="me-2"
                             aria-label="Search"
+                            onChange={SearchField}
                         />
-                        <Button variant="success">Search</Button>
+                        <Button variant="success" onClick={handleSearchButton}>Search</Button>
                     </Form>
                 </Navbar.Collapse>
             </Container>

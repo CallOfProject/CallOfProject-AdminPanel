@@ -3,6 +3,7 @@ import {Col, Modal, Row} from "react-bootstrap";
 import {useState} from "react";
 import Form from "react-bootstrap/Form";
 import './EditUser.css'
+import BootstrapSwitchButton from "bootstrap-switch-button-react";
 
 const EditUserComponent = ({userInfo, show, setShow}) => {
 
@@ -20,7 +21,7 @@ const EditUserComponent = ({userInfo, show, setShow}) => {
                 dialogClassName="modal-90w">
 
                 <Modal.Header style={{backgroundColor: "rgb(193, 219, 222)"}}>
-                    <Modal.Title>Edit User</Modal.Title>
+                    <Modal.Title style={{fontWeight: "700"}}>Edit User</Modal.Title>
                 </Modal.Header>
 
                 <Modal.Body style={{backgroundColor: "rgb(193, 219, 222)"}}>
@@ -30,7 +31,7 @@ const EditUserComponent = ({userInfo, show, setShow}) => {
                                 <Form.Group controlId="formGridFirstName">
                                     <Form.Label style={{fontWeight: "700"}}>First Name</Form.Label>
                                     <Form.Control type="text" placeholder="First Name"
-                                                  defaultValue={userInfo.firstName}/>
+                                                  defaultValue={userInfo.first_name}/>
                                 </Form.Group>
                             </Col>
 
@@ -38,7 +39,7 @@ const EditUserComponent = ({userInfo, show, setShow}) => {
                                 <Form.Group controlId="formGridMiddleName">
                                     <Form.Label style={{fontWeight: "700"}}>Middle Name</Form.Label>
                                     <Form.Control type="text" placeholder="Middle Name"
-                                                  defaultValue={userInfo.middleName}/>
+                                                  defaultValue={userInfo.middle_name}/>
                                 </Form.Group>
                             </Col>
                         </Row>
@@ -47,7 +48,7 @@ const EditUserComponent = ({userInfo, show, setShow}) => {
                             <Col md={6}>
                                 <Form.Group controlId="formGridLastName">
                                     <Form.Label style={{fontWeight: "700"}}>Last Name</Form.Label>
-                                    <Form.Control type="text" placeholder="Last Name" defaultValue={userInfo.lastName}/>
+                                    <Form.Control type="text" placeholder="Last Name" defaultValue={userInfo.last_name}/>
                                 </Form.Group>
                             </Col>
 
@@ -61,8 +62,22 @@ const EditUserComponent = ({userInfo, show, setShow}) => {
 
                         <Form.Group controlId="formGridBirthDate">
                             <Form.Label style={{fontWeight: "700"}}>Birth Date</Form.Label>
-                            <Form.Control type="date" defaultValue={userInfo.birthDate.split('/').reverse().join('-')}/>
+                            <Form.Control type="date" defaultValue={userInfo.birth_date.split('/').reverse().join('-')}/>
                         </Form.Group>
+
+                        <Row>
+                            <Form.Label style={{fontWeight: "700"}}>Is Locked</Form.Label>
+                            <BootstrapSwitchButton
+                                checked={userInfo.is_account_blocked}
+                                onlabel='Locked'
+                                onstyle='danger'
+                                offlabel='Active'
+                                offstyle='success'
+                                size="sm"
+                                style='w-50 mx-2'
+                            />
+                        </Row>
+
                     </Form>
                 </Modal.Body>
 

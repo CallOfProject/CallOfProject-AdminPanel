@@ -1,14 +1,7 @@
-import {createSlice, configureStore} from '@reduxjs/toolkit';
+import {configureStore, createSlice} from '@reduxjs/toolkit';
 
 
-const initialFileViewState = {
-    files: [
-        /* new FileDto(generateUniqueID(), "file1", "home", Structure.FILE),
-         new FileDto(generateUniqueID(), "file2", "home", Structure.FILE),
-         new FileDto(generateUniqueID(), "file3", "home", Structure.FILE),
-         new FileDto(generateUniqueID(), "file4", "home", Structure.FILE)*/
-    ]
-}
+const initialUserState = {users: []}
 const initialFolderViewState = {
     folders: [
         /*    new FolderDto(generateUniqueID(), "My Folder", "deneme", Structure.FOLDER),
@@ -71,29 +64,29 @@ const breadCrumb = createSlice({
 })
 
 
-const fileView = createSlice({
-    name: 'fileViews',
-    initialState: initialFileViewState,
+const userTable = createSlice({
+    name: 'userTable',
+    initialState: initialUserState,
     reducers: {
-        addFile(state, action) {
-            state.files.push(action.payload);
+        addUser(state, action) {
+            state.users.push(action.payload);
         },
-        removeFile(state, action) {
-            const fileIdToRemove = action.payload;
-            state.files = state.files.filter(file => file.id !== fileIdToRemove);
+        removeUser(state, action) {
+            const username = action.payload;
+            state.users = state.users.filter(usr => usr.username !== username);
         },
-        updateFile(state, action) {
+        /*updateFile(state, action) {
             const updatedFile = action.payload;
             const index = state.files.findIndex(file => file.id === updatedFile.id);
 
             if (index !== -1)
                 state.files[index] = updatedFile;
-        },
-        removeAll(state) {
+        },*/
+        /*removeAll(state) {
             state.files = []
-        },
+        },*/
         addAll(state, action) {
-            state.files = action.payload
+            state.users = action.payload
         }
     },
 });
@@ -217,7 +210,7 @@ const uploadingFiles = createSlice({
 
 const store = configureStore({
     reducer: {
-        fileView: fileView.reducer,
+        userTable: userTable.reducer,
         folderView: folderView.reducer,
         //currentFolderView: currentFolderView.reducer,
         breadCrumbView: breadCrumb.reducer,
@@ -232,7 +225,7 @@ const store = configureStore({
 });
 
 
-export const fileViewActions = fileView.actions;
+export const userTableActions = userTable.actions;
 export const folderViewActions = folderView.actions;
 export const breadCrumbsActions = breadCrumb.actions;
 //export const currentFolderActions = currentFolderView.actions;

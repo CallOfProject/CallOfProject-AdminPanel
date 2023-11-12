@@ -13,7 +13,7 @@ const ContextProvider = props =>
     const [isClose, setIsClose] = useState(false)
     const [isOpenPasswordGenerator, setIsOpenPasswordGenerator] = useState(false)
     const dispatch = useDispatch();
-
+    const [users, setUsers] = useState([])
     const handleFiles = (event) =>
     {
         const files = event.target.files;
@@ -41,6 +41,7 @@ const ContextProvider = props =>
             conflict, setConflict,
             createLink, setCreateLink,
             share, setShare,
+            users, setUsers,
             isClose, setIsClose,
             isOpenPasswordGenerator, setIsOpenPasswordGenerator,
             handleFiles, handleClickOutside
