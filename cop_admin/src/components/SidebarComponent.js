@@ -1,11 +1,12 @@
 import React from 'react';
 import './Sidebar.css'
 import cop_logo from '../images/cop_logo.png'
+import {Navigate} from "react-router-dom";
 
 const SidebarComponent = () => {
     return (
         <div className="flex-shrink-0 p-3 sidebar" style={{backgroundColor: "rgb(154, 179, 182)"}}>
-            <a href="/"
+            <a href="/home"
                className="d-flex align-items-center pb-3 mb-3 link-body-emphasis text-decoration-none border-bottom">
                 <img className="cop-image" src={cop_logo} height="100px" width="280px" alt="cop_logo"/>
             </a>
@@ -18,8 +19,11 @@ const SidebarComponent = () => {
                     </button>
                     <div className="collapse show" id="home-collapse">
                         <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                            <li><a href="#"
-                                   className="link-body-emphasis d-inline-flex text-decoration-none rounded">Users</a>
+                            <li>
+                                <a href="/users"
+                                   className="link-body-emphasis d-inline-flex text-decoration-none rounded">
+                                    Users
+                                </a>
                             </li>
                             <li><a href="#"
                                    className="link-body-emphasis d-inline-flex text-decoration-none rounded">Authorize</a>
@@ -77,6 +81,9 @@ const SidebarComponent = () => {
                         </ul>
                     </div>
                 </li>
+
+                <li className="border-top my-3"></li>
+
             </ul>
         </div>
     );

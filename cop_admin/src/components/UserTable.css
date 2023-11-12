@@ -1,0 +1,57 @@
+.user-table {
+    font-weight: 700;
+    --bs-table-color: #000;
+    --bs-table-bg: rgb(193, 219, 222);
+    --bs-table-border-color: rgb(154, 179, 182);
+    --bs-table-striped-bg: rgb(193, 219, 222);
+    --bs-table-striped-color: #000;
+    --bs-table-active-bg: #dfe0e1;
+    --bs-table-active-color: #000;
+    --bs-table-hover-bg: rgb(154, 179, 182);
+    --bs-table-hover-color: #000;
+    color: var(--bs-table-color);
+    border-color: var(--bs-table-border-color);
+}
+
+
+/* Small devices (landscape phones) */
+@media (max-width: 576px) {
+    .user-table {
+        font-size: 10pt;
+        font-weight: 500;
+        --bs-table-color: #000;
+        --bs-table-bg: rgb(193, 219, 222);
+        --bs-table-border-color: rgb(154, 179, 182);
+        --bs-table-striped-bg: rgb(193, 219, 222);
+        --bs-table-striped-color: #000;
+        --bs-table-active-bg: #dfe0e1;
+        --bs-table-active-color: #000;
+        --bs-table-hover-bg: rgb(154, 179, 182);
+        --bs-table-hover-color: #000;
+        color: var(--bs-table-color);
+        border-color: var(--bs-table-border-color);
+    }
+
+
+}
+
+/* Medium devices (tablets) */
+@media (min-width: 576px) and (max-width: 768px) {
+    .user-table {
+        font-size: 10pt;
+        font-weight: 500;
+        --bs-table-color: #000;
+        --bs-table-bg: rgb(193, 219, 222);
+        --bs-table-border-color: rgb(154, 179, 182);
+        --bs-table-striped-bg: rgb(193, 219, 222);
+        --bs-table-striped-color: #000;
+        --bs-table-active-bg: #dfe0e1;
+        --bs-table-active-color: #000;
+        --bs-table-hover-bg: rgb(154, 179, 182);
+        --bs-table-hover-color: #000;
+        color: var(--bs-table-color);
+        border-color: var(--bs-table-border-color);
+    }
+
+}
+

@@ -91,10 +91,13 @@
         height: 100vh;
         padding: 10px; /* Örnek: Kenar boşluğunu küçült */
         font-weight: 700;
-        font-size: 16px; /* Örnek: Yazı boyutunu küçült */
+        font-size: 11pt; /* Örnek: Yazı boyutunu küçült */
     }
     .sidebar-btn{
-        font-size: 20px; /* Örnek: Yazı boyutunu küçült */
+        font-size: 13pt; /* Örnek: Yazı boyutunu küçült */
     }
-
 }
+
+
+
+
