@@ -1,9 +1,9 @@
 import {Card, Row} from "react-bootstrap";
-
+import './AdminPage.css'
 const SummaryInformationComponent = () =>
 {
     return(
-        <Row style={{marginBottom: "80px"}}>
+        <Row className="summary-info-row">
             <Card
                 bg="success"
                 key="success"
@@ -12,7 +12,7 @@ const SummaryInformationComponent = () =>
             >
                 <Card.Header className="card-header">User Count</Card.Header>
                 <Card.Body>
-                    <Card.Text>Total user count: 33</Card.Text>
+                    <Card.Text><strong>Total user count:</strong> 33</Card.Text>
                 </Card.Body>
             </Card>
 
@@ -24,7 +24,7 @@ const SummaryInformationComponent = () =>
             >
                 <Card.Header className="card-header">User Count</Card.Header>
                 <Card.Body>
-                    <Card.Text>Total user count: 33</Card.Text>
+                    <Card.Text><strong>Total user count:</strong> 33</Card.Text>
                 </Card.Body>
             </Card>
 
@@ -37,9 +37,9 @@ const SummaryInformationComponent = () =>
                 <Card.Header className="card-header">Ticket Information</Card.Header>
                 <Card.Body>
                     <Card.Text>
-                        Opened ticket count: 12
+                        <strong>Opened ticket count:</strong> 12
                         <br />
-                        Unopened ticket count: 12
+                        <strong>Unopened ticket count:</strong> 12
                     </Card.Text>
                 </Card.Body>
             </Card>

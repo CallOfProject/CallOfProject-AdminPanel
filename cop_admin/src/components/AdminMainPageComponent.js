@@ -6,7 +6,9 @@ const AdminMainPageComponent = () => {
     return (
         <div className="admin-page-root">
             <SummaryInformationComponent/>
-            <DrillDownChartComponent/>
+            <div>
+                <DrillDownChartComponent/>
+            </div>
         </div>
     );
 }

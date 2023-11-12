@@ -3,8 +3,9 @@
 .main-page-side-bar {
     float: left;
     width: 20%;
+    /*height: 100%*/;
     background-color: rgb(154, 179, 182) !important;
-    height: 100vh;
+
     /*border-style: solid;*/
     /*border-color: black;*/
 }
@@ -16,5 +17,74 @@
     margin-left: 3px;
     /*border-style: solid;*/
     /*border-color: brown;*/
+}
+
+
+@media (max-width: 576px) {
+    .main-page-side-bar {
+        float: left;
+        width: 30%;
+        /*height: 100%*/;
+        background-color: rgb(154, 179, 182) !important;
+
+        /*border-style: solid;*/
+        /*border-color: black;*/
+    }
+
+    .main-page-admin {
+        float: right;
+        width: 65% !important;
+        height: 100vh;
+        align-items: center;
+        /*border-style: solid;*/
+        /*border-color: brown;*/
+    }
+
+}
+
+/* Medium devices (tablets) */
+@media (min-width: 576px) and (max-width: 768px) {
+    .main-page-side-bar {
+        float: left;
+        width: 20%;
+        /*height: 100%*/;
+        background-color: rgb(154, 179, 182) !important;
+
+        /*border-style: solid;*/
+        /*border-color: black;*/
+    }
+
+    .main-page-admin {
+        float: right;
+        width: 79.5% !important;
+        height: 100vh;
+        margin-left: 3px;
+        /*border-style: solid;*/
+        /*border-color: brown;*/
+    }
+
+}
+
+/* Large devices (desktops) */
+@media (min-width: 768px) and (max-width: 992px) {
+    .main-page-side-bar {
+        float: left;
+        width: 20%;
+        /*height: 100%*/;
+        background-color: rgb(154, 179, 182) !important;
+
+        /*border-style: solid;*/
+        /*border-color: black;*/
+    }
+
+    .main-page-admin {
+        float: right;
+        width: 79.5% !important;
+        height: 100vh;
+        margin-left: 3px;
+        /*border-style: solid;*/
+        /*border-color: brown;*/
+    }
+
 }
 
