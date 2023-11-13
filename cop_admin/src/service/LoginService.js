@@ -1,7 +1,8 @@
 import axios from "axios";
 import {UserLoginResponseDTO} from "../dto/UserLoginResponseDTO";
+import {URL_PREFIX} from "../ConnectionUtil";
 
-const LOGIN_URL = `http://localhost:4141/api/auth/login`
+const LOGIN_URL = `${URL_PREFIX}/api/auth/login`
 const LoginService = async (userInput) => {
 
     try {

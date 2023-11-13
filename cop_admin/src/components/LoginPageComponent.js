@@ -13,7 +13,7 @@ const LoginPageComponent = () => {
     const [password, setPassword] = useState("")
     const [usernameValidation, setUsernameValidation] = useState(Status.NONE)
     const [passwordValidation, setPasswordValidation] = useState(Status.NONE)
-    const [success, setSuccess] = useState(false)
+    const [success, setSuccess] = useState(Status.NONE)
 
     const HandleUsername = (event) => setUsername(event.target.value);
     const HandlePassword = (event) => setPassword(event.target.value);
@@ -31,10 +31,9 @@ const LoginPageComponent = () => {
             if (loginResponse.success) {
                 const user = new UserDTO(username, loginResponse.accessToken, loginResponse.refreshToken)
                 user.storeOnLocalStorage()
-                setSuccess(true)
-                console.log(loginResponse)
+                setSuccess(Status.SUCCESS)
             } else {
-                setSuccess(false)
+                setSuccess(Status.FAIL)
                 console.log(loginResponse)
             }
         } else {
@@ -42,10 +41,12 @@ const LoginPageComponent = () => {
         }
 
     };
+
     return (
         <div className="container-fluid cop-container">
             <div className="user-form">
-                {success && <Navigate to="/home"/>}
+
+                {success === Status.SUCCESS && success !== Status.NONE && <Navigate to="/home"/>}
                 <Stack gap={3}>
                     <h2 style={{textAlign: "center"}}>
                         <img className="mb-4 cop-logo" src={cop_logo} alt=""/>

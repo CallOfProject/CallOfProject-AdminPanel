@@ -2,7 +2,7 @@ import {Table} from "react-bootstrap";
 import './UserTable.css';
 import Button from "react-bootstrap/Button";
 import {useEffect, useState} from "react";
-import {findUsers} from "../service/UserService";
+import {findUsers, removeUser} from "../service/UserService";
 import InfiniteScroll from "react-infinite-scroll-component";
 import EditUserComponent from "./EditUserComponent";
 import Form from "react-bootstrap/Form";
@@ -19,12 +19,12 @@ const UserTableComponent = ({isClickSearch, word}) => {
         fetchData();
     }, []);
 
+
     const fetchData = async () => {
         try {
 
             setTimeout(async () => {
-                const newUsers = await findUsers(page, word);
-
+                const newUsers = await findUsers(page);
                 if (newUsers.length > 0) {
                     setUsers(prevUsers => [...prevUsers, ...newUsers]);
                     setPage(page + 1)
@@ -43,6 +43,10 @@ const UserTableComponent = ({isClickSearch, word}) => {
         setEditUser(usr);
     };
 
+    const handleRemoveButton = async username => {
+
+        await removeUser(username);
+    };
     return (
         <div id="scrollableDiv" style={{height: "800px", overflowY: "auto", border: "2px solid rgba(34, 36, 38, .15)"}}>
             <InfiniteScroll
@@ -54,7 +58,8 @@ const UserTableComponent = ({isClickSearch, word}) => {
                 scrollableTarget="scrollableDiv"
             >
                 <Table striped className="table-primary table-responsive user-table table-hover table-bordered">
-                    {clickedEdit && <EditUserComponent show={show} setShow={setShow} userInfo={editUser}/>}
+                    {clickedEdit && <EditUserComponent setClickEdit={setClickedEdit} show={show} setShow={setShow}
+                                                       userInfo={editUser} setUserInfo={setEditUser}/>}
                     <thead style={{textAlign: "center", backgroundColor: "rgb(154, 179, 182)"}}>
                     <tr>
                         <th>#</th>
@@ -78,10 +83,10 @@ const UserTableComponent = ({isClickSearch, word}) => {
                             <td>{usr.creation_date}</td>
                             <td>{usr.birth_date}</td>
                             <td>
-                                {!usr.is_account_blocked ? <Form.Check type={"radio"}>
-                                    <Form.Check.Input type={"radio"} isValid checked={true}/>
-                                </Form.Check> : <Form.Check type={"radio"}>
+                                {usr.is_account_blocked ? <Form.Check type={"radio"}>
                                     <Form.Check.Input type={"radio"} isInvalid checked={true}/>
+                                </Form.Check> : <Form.Check type={"radio"}>
+                                    <Form.Check.Input type={"radio"} isValid checked={true}/>
                                 </Form.Check>}
                             </td>
                             <td style={{float: "left", width: "100%"}}>
@@ -91,7 +96,8 @@ const UserTableComponent = ({isClickSearch, word}) => {
                                 </Button>
                             </td>
                             <td>
-                                <Button className="btn-sm" variant="danger">
+                                <Button className="btn-sm" variant="danger"
+                                        onClick={() => handleRemoveButton(usr.username)}>
                                     Remove
                                 </Button>
                             </td>
