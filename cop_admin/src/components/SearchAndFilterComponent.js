@@ -4,12 +4,29 @@ import Form from 'react-bootstrap/Form';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import React from "react";
+import React, {useState} from "react";
 import './SearchAndFilter.css'
+import {useDispatch} from "react-redux";
+import {userTableActions} from "../store";
+import {findUsersWitKeyword} from "../service/UserService";
 
-const SearchAndFilterComponent = ({word, setWord, isClickSearch, setIsClickSearch}) => {
-    const handleSearchButton = () => {
-        setIsClickSearch(true)
+const addAll = ({dispatch}, users) => dispatch(userTableActions.addAll(users))
+const SearchAndFilterComponent = ({title}) => {
+
+    const [word, setWord] = useState("")
+    const dispatch = useDispatch()
+    const handleSearchButton = async () => {
+        await fetchData(1, word)
+
+    };
+
+    const fetchData = async (page, word) => {
+        try {
+            const newUsers = await findUsersWitKeyword(page, word);
+            addAll({dispatch}, newUsers)
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
     };
     const SearchField = (event) => {
         setWord(event.target.value)
@@ -17,7 +34,7 @@ const SearchAndFilterComponent = ({word, setWord, isClickSearch, setIsClickSearc
     return (
         <Navbar expand="lg" style={{backgroundColor: "rgb(154, 179, 182)", color: "black"}}>
             <Container fluid>
-                <Navbar.Brand style={{fontWeight: "700", fontSize: "16pt"}} href="#">Admin</Navbar.Brand>
+                <Navbar.Brand style={{fontWeight: "700", fontSize: "16pt"}} href="#">{title}</Navbar.Brand>
                 <Navbar.Toggle aria-controls="navbarScroll"/>
                 <Navbar.Collapse id="navbarScroll">
                     <Nav

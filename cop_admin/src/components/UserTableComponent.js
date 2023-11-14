@@ -6,9 +6,17 @@ import {findUsers, removeUser} from "../service/UserService";
 import InfiniteScroll from "react-infinite-scroll-component";
 import EditUserComponent from "./EditUserComponent";
 import Form from "react-bootstrap/Form";
+import {useDispatch, useSelector} from "react-redux";
+import {userTableActions} from "../store";
 
-const UserTableComponent = ({isClickSearch, word}) => {
-    const [users, setUsers] = useState([]);
+const load = ({dispatch}, users) => dispatch(userTableActions.load(users))
+const removeAllUsers = ({dispatch}) => dispatch(userTableActions.removeAll())
+
+
+const UserTableComponent = () => {
+    const dispatch = useDispatch()
+    const users = useSelector(state => state.userTable.users)
+
     const [clickedEdit, setClickedEdit] = useState(false);
     const [show, setShow] = useState(false);
     const [hasMore, setHasMore] = useState(true);
@@ -16,6 +24,7 @@ const UserTableComponent = ({isClickSearch, word}) => {
     const [editUser, setEditUser] = useState(null);
 
     useEffect(() => {
+        removeAllUsers({dispatch})
         fetchData();
     }, []);
 
@@ -26,7 +35,7 @@ const UserTableComponent = ({isClickSearch, word}) => {
             setTimeout(async () => {
                 const newUsers = await findUsers(page);
                 if (newUsers.length > 0) {
-                    setUsers(prevUsers => [...prevUsers, ...newUsers]);
+                    load({dispatch}, newUsers)
                     setPage(page + 1)
                 } else {
                     setHasMore(false);

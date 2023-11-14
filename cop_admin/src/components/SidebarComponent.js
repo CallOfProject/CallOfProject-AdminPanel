@@ -1,11 +1,30 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './Sidebar.css'
 import cop_logo from '../images/cop_logo.png'
+import {logout} from "../service/UserService";
 import {Navigate} from "react-router-dom";
 
 const SidebarComponent = () => {
+    const [logoutSuccess, setLogoutSuccess] = useState(false)
+
+    const handleLogout = () => {
+
+        //var k = document.getElementsByClassName("root")
+
+        var css = "* { cursor: wait; !important}";
+        var style = document.createElement("style");
+        style.type = "text/css";
+        style.id = "mywaitcursorstyle";
+        style.appendChild(document.createTextNode(css));
+        document.head.appendChild(style);
+        setTimeout(async () => {
+            const status = await logout()
+            setLogoutSuccess(status)
+        }, 600)
+    };
     return (
         <div className="flex-shrink-0 p-3 sidebar" style={{backgroundColor: "rgb(154, 179, 182)"}}>
+            {logoutSuccess && <Navigate to={"/"}/>}
             <a href="/home"
                className="d-flex align-items-center pb-3 mb-3 link-body-emphasis text-decoration-none border-bottom">
                 <img className="cop-image" src={cop_logo} height="100px" width="280px" alt="cop_logo"/>
@@ -25,7 +44,7 @@ const SidebarComponent = () => {
                                     Users
                                 </a>
                             </li>
-                            <li><a href="#"
+                            <li><a href="/authorizate-management"
                                    className="link-body-emphasis d-inline-flex text-decoration-none rounded">Authorize</a>
                             </li>
                         </ul>
@@ -38,7 +57,9 @@ const SidebarComponent = () => {
                     </button>
                     <div className="collapse" id="dashboard-collapse">
                         <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                            <li><a href="#"
+                            <li>
+                                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                                <a href="#"
                                    className="link-body-emphasis d-inline-flex text-decoration-none rounded">Projects</a>
                             </li>
                         </ul>
@@ -52,7 +73,9 @@ const SidebarComponent = () => {
                     </button>
                     <div className="collapse" id="orders-collapse">
                         <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                            <li><a href="#"
+                            <li>
+                                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                                <a href="#"
                                    className="link-body-emphasis d-inline-flex text-decoration-none rounded">Tickets</a>
                             </li>
                         </ul>
@@ -70,14 +93,20 @@ const SidebarComponent = () => {
                     </button>
                     <div className="collapse" id="account-collapse">
                         <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                            <li><a href="#"
+                            <li>
+                                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                                <a href="#"
                                    className="link-body-emphasis d-inline-flex text-decoration-none rounded">Profile</a>
                             </li>
-                            <li><a href="#"
+                            <li>
+                                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                                <a href="#"
                                    className="link-body-emphasis d-inline-flex text-decoration-none rounded">Settings</a>
                             </li>
-                            <li><a href="#" className="link-body-emphasis d-inline-flex text-decoration-none rounded">Sign
-                                out</a></li>
+                            <li><a href={"/"} onClick={handleLogout}
+                                   className="link-body-emphasis d-inline-flex text-decoration-none rounded">Sign
+                                out</a>
+                            </li>
                         </ul>
                     </div>
                 </li>

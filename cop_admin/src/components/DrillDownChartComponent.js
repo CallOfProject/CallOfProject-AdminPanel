@@ -3,10 +3,10 @@ import CanvasJSReact from '@canvasjs/react-charts';
 
 const CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
-const totalVisitors = 829500;
 
 const DrillDownChartComponent = () => {
     const chartRef = useRef(null);
+
 
     const [chartOptions, setChartOptions] = useState({
         animationEnabled: true,
@@ -21,13 +21,13 @@ const DrillDownChartComponent = () => {
             fontColor: "white",
             padding: 5
         }],
-        legend: {
-            fontFamily: "calibri",
-            fontSize: 14,
-            itemTextFormatter: function (e) {
-                return e.dataPoint.name + ": " + Math.round(e.dataPoint.y / totalVisitors * 100) + "%";
-            }
-        },
+        /*  legend: {
+              fontFamily: "calibri",
+              fontSize: 14,
+              itemTextFormatter: function (e) {
+                  return e.dataPoint.name + ": " + Math.round(localStorage.getItem("new_user") / localStorage.getItem("total_user") * 100) + "%";
+              }
+          },*/
         data: []
     });
 
@@ -42,8 +42,8 @@ const DrillDownChartComponent = () => {
             startAngle: 90,
             type: "doughnut",
             dataPoints: [
-                {y: 522460, name: "New Users", color: "#E7823A"},
-                {y: 307040, name: "Existing Users", color: "#546BC1"}
+                {y: localStorage.getItem("new_user"), name: "New Users", color: "#E7823A"},
+                {y: localStorage.getItem("total_user"), name: "Existing Users", color: "#546BC1"}
             ]
         }],
     };

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {FormControl, InputGroup, Stack} from "react-bootstrap";
 import {Status} from "../Status";
 import "./LoginPage.css"
@@ -15,6 +15,12 @@ const LoginPageComponent = () => {
     const [passwordValidation, setPasswordValidation] = useState(Status.NONE)
     const [success, setSuccess] = useState(Status.NONE)
 
+    useEffect(() => {
+        var style = document.getElementById("mywaitcursorstyle");
+        if (style) {
+            style.parentNode.removeChild(style);
+        }
+    }, []);
     const HandleUsername = (event) => setUsername(event.target.value);
     const HandlePassword = (event) => setPassword(event.target.value);
 

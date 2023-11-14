@@ -1,13 +1,9 @@
-import './Users.css'
-import UserTableComponent from "./UserTableComponent";
 import {Col} from "react-bootstrap";
 import SidebarComponent from "./SidebarComponent";
+import RoleAuthorizationComponent from "./RoleAuthorizationComponent";
 import SearchAndFilterComponent from "./SearchAndFilterComponent";
-import {useState} from "react";
 
-const UsersComponent = () => {
-
-
+const RoleManagementComponent = () => {
     return (
         <div className="user-page-root">
             <Col className="user-page-side-component">
@@ -15,16 +11,15 @@ const UsersComponent = () => {
             </Col>
 
             <Col className="user-page-usertable">
-
                 <div className="filter">
-                    <SearchAndFilterComponent title={"Admin-Root Page"}/>
+                    <SearchAndFilterComponent title={"Root Panel"}/>
                 </div>
                 <div>
-                    <UserTableComponent/>
+                    <RoleAuthorizationComponent/>
                 </div>
             </Col>
 
         </div>
     );
 }
-export default UsersComponent;
+export default RoleManagementComponent;

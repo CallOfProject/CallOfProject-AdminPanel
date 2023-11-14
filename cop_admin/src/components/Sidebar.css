@@ -1,6 +1,8 @@
+
 .sidebar {
     width: 100%;
     height: 100vh;
+    font-size: 13pt;
 }
 .sidebar-component-list{
 
@@ -65,7 +67,9 @@
     overflow-y: auto;
 }
 
-
+.sidebar-btn{
+    font-size: 15pt; /* Örnek: Yazı boyutunu küçült */
+}
 
 
 

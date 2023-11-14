@@ -75,16 +75,19 @@ const userTable = createSlice({
             const username = action.payload;
             state.users = state.users.filter(usr => usr.username !== username);
         },
-        /*updateFile(state, action) {
-            const updatedFile = action.payload;
-            const index = state.files.findIndex(file => file.id === updatedFile.id);
+        updateUser(state, action) {
+            const updatedUser = action.payload;
+            const index = state.users.findIndex(usr => usr.username === updatedUser.username);
 
             if (index !== -1)
-                state.files[index] = updatedFile;
-        },*/
-        /*removeAll(state) {
-            state.files = []
-        },*/
+                state.users[index] = updatedUser;
+        },
+        load(state, action) {
+            state.users = [...state.users, ...action.payload];
+        },
+        removeAll(state) {
+            state.users = []
+        },
         addAll(state, action) {
             state.users = action.payload
         }

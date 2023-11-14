@@ -1,8 +1,8 @@
 import {Card, Row} from "react-bootstrap";
 import './AdminPage.css'
-const SummaryInformationComponent = () =>
-{
-    return(
+
+const SummaryInformationComponent = () => {
+    return (
         <Row className="summary-info-row">
             <Card
                 bg="success"
@@ -12,21 +12,10 @@ const SummaryInformationComponent = () =>
             >
                 <Card.Header className="card-header">User Count</Card.Header>
                 <Card.Body>
-                    <Card.Text><strong>Total user count:</strong> 33</Card.Text>
+                    <Card.Text><strong>Total user count:</strong> {localStorage.getItem("total_user")}</Card.Text>
                 </Card.Body>
             </Card>
 
-            <Card
-                bg="primary"
-                key="primary"
-                text="light"
-                className="cop-card mb-2"
-            >
-                <Card.Header className="card-header">User Count</Card.Header>
-                <Card.Body>
-                    <Card.Text><strong>Total user count:</strong> 33</Card.Text>
-                </Card.Body>
-            </Card>
 
             <Card
                 bg="danger"
@@ -38,7 +27,7 @@ const SummaryInformationComponent = () =>
                 <Card.Body>
                     <Card.Text>
                         <strong>Opened ticket count:</strong> 12
-                        <br />
+                        <br/>
                         <strong>Unopened ticket count:</strong> 12
                     </Card.Text>
                 </Card.Body>
