@@ -10,6 +10,7 @@ import {userTableActions} from "../store";
 import {giveAdminRole, removeAdminRole} from "../service/RoleManagementService";
 import 'react-notifications/lib/notifications.css'
 import {NotificationContainer, NotificationManager} from 'react-notifications';
+import {getRole} from "../dto/UserDTO";
 
 const load = ({dispatch}, users) => dispatch(userTableActions.load(users))
 const removeAllUsers = ({dispatch}) => dispatch(userTableActions.removeAll())
@@ -44,10 +45,14 @@ const RoleAuthorizationComponent = () => {
     };
     const handleGiveAdminRoleButton = async (user) => {
         try {
+            const role = getRole()
+            if (role !== "ROLE_ROOT") {
+                NotificationManager.error(`Permission Denied!`, "Error")
+                return
+            }
             const result = await giveAdminRole(user.username);
 
             if (result === true) {
-                console.log(user);
                 const role = {
                     name: "ROLE_ADMIN"
                 };
@@ -71,13 +76,12 @@ const RoleAuthorizationComponent = () => {
 
     const handleRemoveAdminRole = async (user) => {
         try {
-            if (user.roles.contains(r => r.name === "ROLE_ROOT"))
-            {
-                NotificationManager.warning(`You do not give or remove role from root!`, "Fail")
+            const role = getRole()
+            if (role !== "ROLE_ROOT") {
+                NotificationManager.error(`Permission Denied!`, "Error")
                 return
             }
             const result = await removeAdminRole(user.username);
-
             if (result === true) {
                 const updatedUser = {
                     ...user,
@@ -85,10 +89,8 @@ const RoleAuthorizationComponent = () => {
                 };
                 updateUserCallback({dispatch}, updatedUser);
                 NotificationManager.success(`Admin role removed from ${user.username}`, "Success")
-            }
-            else NotificationManager.info(`${user.username} has not admin role!`, "Information")
-        }
-        catch (error) {
+            } else NotificationManager.info(`${user.username} has not admin role!`, "Information")
+        } catch (error) {
             NotificationManager.warning(`Admin role removed operation failed!`, "Fail")
         }
     };

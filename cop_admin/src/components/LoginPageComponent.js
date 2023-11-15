@@ -7,6 +7,8 @@ import LoginService from "../service/LoginService";
 import {UserLoginDTO} from "../dto/UserLoginDTO";
 import {UserDTO} from "../dto/UserDTO";
 import {Navigate} from "react-router-dom";
+import {NotificationContainer, NotificationManager} from 'react-notifications';
+import 'react-notifications/lib/notifications.css'
 
 const LoginPageComponent = () => {
     const [username, setUsername] = useState("")
@@ -35,23 +37,27 @@ const LoginPageComponent = () => {
             const loginResponse = await LoginService(loginDTO);
 
             if (loginResponse.success) {
-                const user = new UserDTO(username, loginResponse.accessToken, loginResponse.refreshToken)
+                const user = new UserDTO(username, loginResponse.accessToken, loginResponse.refreshToken, loginResponse.role)
                 user.storeOnLocalStorage()
-                setSuccess(Status.SUCCESS)
+                NotificationManager.success(`Welcome ${username}`, "Success")
+                setTimeout(() => {
+                    setSuccess(Status.SUCCESS)
+                }, 2000)
+
             } else {
                 setSuccess(Status.FAIL)
-                console.log(loginResponse)
+                NotificationManager.error(`Invalid username or password!`, "Error")
             }
         } else {
-            // alert
+
         }
 
     };
 
     return (
         <div className="container-fluid cop-container">
+            <NotificationContainer/>
             <div className="user-form">
-
                 {success === Status.SUCCESS && success !== Status.NONE && <Navigate to="/home"/>}
                 <Stack gap={3}>
                     <h2 style={{textAlign: "center"}}>

@@ -23,6 +23,7 @@ export const removeAdminRole = async (username) => {
         const response = await axios.post(REMOVE_ROLE_URL, {}, {
             headers: {"Authorization": `Bearer ${token}`}
         });
+        console.log("AUTH: ", response.data.object)
         return response.data.object
     } catch (error) {
         return false

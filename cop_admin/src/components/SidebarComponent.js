@@ -1,12 +1,18 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './Sidebar.css'
 import cop_logo from '../images/cop_logo.png'
 import {logout} from "../service/UserService";
 import {Navigate} from "react-router-dom";
+import {getRole} from "../dto/UserDTO";
 
 const SidebarComponent = () => {
     const [logoutSuccess, setLogoutSuccess] = useState(false)
+    const [isVisibleAuthPage, setIsVisibleAuthPage] = useState(false)
 
+    useEffect(() => {
+        if (getRole() === "ROLE_ROOT")
+            setIsVisibleAuthPage(true)
+    }, []);
     const handleLogout = () => {
         const css = "* { cursor: wait; !important}";
         const style = document.createElement("style");
@@ -42,9 +48,10 @@ const SidebarComponent = () => {
                                     Users
                                 </a>
                             </li>
-                            <li><a href="/authorizate-management"
+                            {isVisibleAuthPage && <li>
+                                <a href="/authorizate-management"
                                    className="link-body-emphasis d-inline-flex text-decoration-none rounded">Authorize</a>
-                            </li>
+                            </li>}
                         </ul>
                     </div>
                 </li>
