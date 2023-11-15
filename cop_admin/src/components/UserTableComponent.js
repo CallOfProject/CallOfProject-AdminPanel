@@ -62,9 +62,9 @@ const UserTableComponent = () => {
                 deleteUser({dispatch}, user.username)
                 NotificationManager.success("User removed Successfully!", "Success")
             }
-            else NotificationManager.errorMonitor("User cannot removed!", "Error")
+            else NotificationManager.error("Permission Denied", "Permission denied!")
         } catch (error) {
-            NotificationManager.success("User cannot removed!", "Error")
+            NotificationManager.error("Permission Denied", "Permission denied!")
         }
     };
     return (
