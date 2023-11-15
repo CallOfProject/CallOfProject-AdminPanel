@@ -11,7 +11,7 @@ export const giveAdminRole = async (username) => {
         });
         return response.data.object
     } catch (error) {
-        console.log(error)
+        return false
     }
 }
 
@@ -25,6 +25,6 @@ export const removeAdminRole = async (username) => {
         });
         return response.data.object
     } catch (error) {
-        console.log(error)
+        return false
     }
 }

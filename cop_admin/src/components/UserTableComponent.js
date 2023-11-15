@@ -8,9 +8,12 @@ import EditUserComponent from "./EditUserComponent";
 import Form from "react-bootstrap/Form";
 import {useDispatch, useSelector} from "react-redux";
 import {userTableActions} from "../store";
+import 'react-notifications/lib/notifications.css'
+import {NotificationContainer, NotificationManager} from 'react-notifications';
 
 const load = ({dispatch}, users) => dispatch(userTableActions.load(users))
 const removeAllUsers = ({dispatch}) => dispatch(userTableActions.removeAll())
+const deleteUser = ({dispatch}, user) => dispatch(userTableActions.removeUser(user))
 
 
 const UserTableComponent = () => {
@@ -52,12 +55,21 @@ const UserTableComponent = () => {
         setEditUser(usr);
     };
 
-    const handleRemoveButton = async username => {
-
-        await removeUser(username);
+    const handleRemoveButton = async user => {
+        try {
+            const isRemoved = await removeUser(user.username);
+            if (isRemoved) {
+                deleteUser({dispatch}, user.username)
+                NotificationManager.success("User removed Successfully!", "Success")
+            }
+            else NotificationManager.errorMonitor("User cannot removed!", "Error")
+        } catch (error) {
+            NotificationManager.success("User cannot removed!", "Error")
+        }
     };
     return (
         <div id="scrollableDiv" style={{height: "800px", overflowY: "auto", border: "2px solid rgba(34, 36, 38, .15)"}}>
+            <NotificationContainer/>
             <InfiniteScroll
                 next={fetchData}
                 hasMore={hasMore}
@@ -106,7 +118,7 @@ const UserTableComponent = () => {
                             </td>
                             <td>
                                 <Button className="btn-sm" variant="danger"
-                                        onClick={() => handleRemoveButton(usr.username)}>
+                                        onClick={() => handleRemoveButton(usr)}>
                                     Remove
                                 </Button>
                             </td>

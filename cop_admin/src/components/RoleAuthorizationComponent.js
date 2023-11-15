@@ -8,6 +8,8 @@ import {findUsers} from "../service/UserService";
 import {useDispatch, useSelector} from "react-redux";
 import {userTableActions} from "../store";
 import {giveAdminRole, removeAdminRole} from "../service/RoleManagementService";
+import 'react-notifications/lib/notifications.css'
+import {NotificationContainer, NotificationManager} from 'react-notifications';
 
 const load = ({dispatch}, users) => dispatch(userTableActions.load(users))
 const removeAllUsers = ({dispatch}) => dispatch(userTableActions.removeAll())
@@ -41,40 +43,58 @@ const RoleAuthorizationComponent = () => {
         }
     };
     const handleGiveAdminRoleButton = async (user) => {
-        const result = await giveAdminRole(user.username);
+        try {
+            const result = await giveAdminRole(user.username);
 
-        if (result === true) {
-            console.log(user);
-            const role = {
-                name: "ROLE_ADMIN"
-            };
-            let updatedUser;
-            if (!Object.isFrozen(user) && !Object.isSealed(user) && !Object.isFrozen(user.roles)) {
-                user.roles.push(role);
-                updatedUser = { ...user };
-            } else {
-                updatedUser = {
-                    ...user,
-                    roles: [...user.roles, role]
+            if (result === true) {
+                console.log(user);
+                const role = {
+                    name: "ROLE_ADMIN"
                 };
-            }
-            updateUserCallback({dispatch}, updatedUser);
+                let updatedUser;
+                if (!Object.isFrozen(user) && !Object.isSealed(user) && !Object.isFrozen(user.roles)) {
+                    user.roles.push(role);
+                    updatedUser = {...user};
+                } else {
+                    updatedUser = {
+                        ...user,
+                        roles: [...user.roles, role]
+                    };
+                }
+                updateUserCallback({dispatch}, updatedUser);
+                NotificationManager.success(`Admin role assigned to ${user.username}`, "Success")
+            } else NotificationManager.info(`${user.username} has admin role already!`, "Information")
+        } catch (error) {
+            NotificationManager.warning(`Admin role assigned operation failed!`, "Fail")
         }
     };
 
     const handleRemoveAdminRole = async (user) => {
-        const result = await removeAdminRole(user.username);
+        try {
+            if (user.roles.contains(r => r.name === "ROLE_ROOT"))
+            {
+                NotificationManager.warning(`You do not give or remove role from root!`, "Fail")
+                return
+            }
+            const result = await removeAdminRole(user.username);
 
-        if (result === true) {
-            const updatedUser = {
-                ...user,
-                roles: user.roles.filter(role => role.name !== "ROLE_ADMIN")
-            };
-            updateUserCallback({dispatch}, updatedUser);
+            if (result === true) {
+                const updatedUser = {
+                    ...user,
+                    roles: user.roles.filter(role => role.name !== "ROLE_ADMIN")
+                };
+                updateUserCallback({dispatch}, updatedUser);
+                NotificationManager.success(`Admin role removed from ${user.username}`, "Success")
+            }
+            else NotificationManager.info(`${user.username} has not admin role!`, "Information")
+        }
+        catch (error) {
+            NotificationManager.warning(`Admin role removed operation failed!`, "Fail")
         }
     };
     return (
         <div id="scrollableDiv" style={{height: "800px", overflowY: "auto", border: "2px solid rgba(34, 36, 38, .15)"}}>
+            <NotificationContainer/>
             <InfiniteScroll
                 next={fetchData}
                 hasMore={hasMore}

@@ -8,11 +8,9 @@ const SidebarComponent = () => {
     const [logoutSuccess, setLogoutSuccess] = useState(false)
 
     const handleLogout = () => {
+        const css = "* { cursor: wait; !important}";
+        const style = document.createElement("style");
 
-        //var k = document.getElementsByClassName("root")
-
-        var css = "* { cursor: wait; !important}";
-        var style = document.createElement("style");
         style.type = "text/css";
         style.id = "mywaitcursorstyle";
         style.appendChild(document.createTextNode(css));

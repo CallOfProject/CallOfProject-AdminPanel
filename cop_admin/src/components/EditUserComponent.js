@@ -8,7 +8,8 @@ import {UserUpdateDTO} from "../dto/UserUpdateDTO";
 import {updateUser} from "../service/UserService";
 import {useDispatch} from "react-redux";
 import {userTableActions} from "../store";
-
+import {NotificationContainer, NotificationManager} from 'react-notifications';
+import 'react-notifications/lib/notifications.css'
 
 const updateUserCallback = ({dispatch}, updatedUser) => dispatch(userTableActions.updateUser(updatedUser))
 const EditUserComponent = ({userInfo, show, setShow, setUserInfo}) => {
@@ -18,9 +19,11 @@ const EditUserComponent = ({userInfo, show, setShow, setUserInfo}) => {
     const [middleName, setMiddleName] = useState("")
     const [lastName, setLastName] = useState()
     const [birthDate, setbirthDate] = useState()
-    const [isBlocked, setBlocked] = useState()
-    const [active, setActive] = useState()
+    const [isBlocked, setBlocked] = useState(false)
     const dispatch = useDispatch()
+
+
+    const handleStatus = () => setBlocked(!isBlocked)
     const handleClose = () => setShow(false);
 
     useEffect(() => {
@@ -34,24 +37,23 @@ const EditUserComponent = ({userInfo, show, setShow, setUserInfo}) => {
 
     const handleSubmitButton = async () => {
 
-        const updateDTO = new UserUpdateDTO(userInfo.username, firstName, middleName, lastName, email, !active, birthDate)
-        const updatedUser = await updateUser(updateDTO);
-        /* const info = {
-             first_name: updateDTO.first_name,
-             middle_name: updateDTO.middle_name,
-             last_name: updateDTO.last_name,
-             email: updateDTO.email,
-             is_account_blocked: updateDTO.is_account_blocked,
-             birth_date: updateDTO.birth_date
-         }*/
-        updateUserCallback({dispatch}, updatedUser)
+        try {
+            if (!firstName || !lastName || !email || !birthDate)
+                NotificationManager.warning("Please fill all blanks!", "Warning")
+            else {
+                const updateDTO = new UserUpdateDTO(userInfo.username, firstName, middleName, lastName, email, isBlocked, birthDate)
+                const updatedUser = await updateUser(updateDTO);
+                updateUserCallback({dispatch}, updatedUser)
+                NotificationManager.success('User updated successfully!', 'Success Edit');
+            }
+        } catch (error) {
+            NotificationManager.error("User cannot updated!", "Fail Edit")
+        }
 
-    };
-    const handleStatus = (event) => {
-        setBlocked(!isBlocked)
     };
     return (
         <div>
+
             <Modal
                 className="edit-user-modal"
                 show={show}
@@ -59,7 +61,7 @@ const EditUserComponent = ({userInfo, show, setShow, setUserInfo}) => {
                 backdrop="static"
                 keyboard={false}
                 dialogClassName="modal-90w">
-
+                <NotificationContainer/>
                 <Modal.Header style={{backgroundColor: "rgb(193, 219, 222)"}}>
                     <Modal.Title style={{fontWeight: "700"}}>Edit User</Modal.Title>
                 </Modal.Header>
@@ -86,6 +88,7 @@ const EditUserComponent = ({userInfo, show, setShow, setUserInfo}) => {
                                     <Form.Label style={{fontWeight: "700"}}>Middle Name</Form.Label>
                                     <Form.Control type="text" placeholder="Middle Name"
                                                   isInvalid={middleName.length === 2 &&
+                                                      // eslint-disable-next-line no-mixed-operators
                                                       middleName === " " || /^\s+|\s+$/.test(middleName)}
                                                   onChange={event => setMiddleName(event.target.value)}
                                                   defaultValue={userInfo.middle_name}/>
@@ -156,6 +159,7 @@ const EditUserComponent = ({userInfo, show, setShow, setUserInfo}) => {
                     <Button variant="primary" onClick={handleSubmitButton}>Submit</Button>
                 </Modal.Footer>
             </Modal>
+
         </div>
     );
 };
