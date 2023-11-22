@@ -35,18 +35,25 @@ const LoginPageComponent = () => {
             const loginDTO = new UserLoginDTO(username, password);
 
             const loginResponse = await LoginService(loginDTO);
+            if (loginResponse.isLocked) {
+                NotificationManager.error(`Your account was locked!`, "Error")
+            }
+            else {
+                if (loginResponse.success) {
+                    const user = new UserDTO(username, loginResponse.accessToken
+                        , loginResponse.refreshToken, loginResponse.role, loginResponse.is_blocked, loginResponse.userId)
 
-            if (loginResponse.success) {
-                const user = new UserDTO(username, loginResponse.accessToken, loginResponse.refreshToken, loginResponse.role)
-                user.storeOnLocalStorage()
-                NotificationManager.success(`Welcome ${username}`, "Success")
-                setTimeout(() => {
-                    setSuccess(Status.SUCCESS)
-                }, 2000)
+                    user.storeOnLocalStorage()
+                    NotificationManager.success(`Welcome ${username}`, "Success")
 
-            } else {
-                setSuccess(Status.FAIL)
-                NotificationManager.error(`Invalid username or password!`, "Error")
+                    setTimeout(() => {
+                        setSuccess(Status.SUCCESS)
+                    }, 2000)
+
+                } else {
+                    setSuccess(Status.FAIL)
+                    NotificationManager.error(`Invalid username or password!`, "Error")
+                }
             }
         } else {
 

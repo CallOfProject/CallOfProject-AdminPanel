@@ -10,6 +10,7 @@ import {useDispatch} from "react-redux";
 import {userTableActions} from "../store";
 import {NotificationContainer, NotificationManager} from 'react-notifications';
 import 'react-notifications/lib/notifications.css'
+import {getUserID} from "../dto/UserDTO";
 
 const updateUserCallback = ({dispatch}, updatedUser) => dispatch(userTableActions.updateUser(updatedUser))
 const EditUserComponent = ({userInfo, show, setShow, setUserInfo}) => {
@@ -38,11 +39,14 @@ const EditUserComponent = ({userInfo, show, setShow, setUserInfo}) => {
     const handleSubmitButton = async () => {
 
         try {
+
             if (!firstName || !lastName || !email || !birthDate)
                 NotificationManager.warning("Please fill all blanks!", "Warning")
             else {
-                const updateDTO = new UserUpdateDTO(userInfo.username, firstName, middleName, lastName, email, isBlocked, birthDate)
+                const updateDTO = new UserUpdateDTO(userInfo.username, firstName, middleName, lastName,
+                    email, isBlocked, birthDate, getUserID())
                 const updatedUser = await updateUser(updateDTO);
+
                 updateUserCallback({dispatch}, updatedUser)
                 NotificationManager.success('User updated successfully!', 'Success Edit');
             }

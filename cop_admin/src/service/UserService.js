@@ -19,9 +19,10 @@ export const updateUser = async (userUpdateDTO) => {
         const UPDATE_URL = `${URL_PREFIX}/api/admin/update/user`
         const token = getUserInformationFromLocalStorage().accessToken;
         const response = await axios.put(UPDATE_URL, userUpdateDTO, {headers: {"Authorization": `Bearer ${token}`}});
+        console.log("H: ", response.data.object)
         return response.data.object
     } catch (error) {
-        console.log(error)
+        console.log("D: ", error)
     }
 }
 
