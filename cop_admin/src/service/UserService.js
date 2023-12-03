@@ -1,10 +1,10 @@
 import axios from "axios";
 import {getUserInformationFromLocalStorage} from "../dto/UserDTO";
-import {URL_PREFIX} from "../ConnectionUtil";
+import {AUTH_URL_PREFIX} from "../ConnectionUtil";
 
 export const findUsers = async (page) => {
     try {
-        const LOGIN_URL = `${URL_PREFIX}/api/admin/find/all/page?p=${page}`
+        const LOGIN_URL = `${AUTH_URL_PREFIX}/api/admin/find/all/page?p=${page}`
         const token = getUserInformationFromLocalStorage().accessToken;
         const response = await axios.get(LOGIN_URL, {headers: {"Authorization": `Bearer ${token}`}});
         return response.data.object.users
@@ -16,7 +16,7 @@ export const findUsers = async (page) => {
 
 export const updateUser = async (userUpdateDTO) => {
     try {
-        const UPDATE_URL = `${URL_PREFIX}/api/admin/update/user`
+        const UPDATE_URL = `${AUTH_URL_PREFIX}/api/admin/update/user`
         const token = getUserInformationFromLocalStorage().accessToken;
         const response = await axios.put(UPDATE_URL, userUpdateDTO, {headers: {"Authorization": `Bearer ${token}`}});
         console.log("H: ", response.data.object)
@@ -29,7 +29,7 @@ export const updateUser = async (userUpdateDTO) => {
 
 export const removeUser = async (username) => {
     try {
-        const UPDATE_URL = `${URL_PREFIX}/api/admin/remove/user?uname=${username}`
+        const UPDATE_URL = `${AUTH_URL_PREFIX}/api/admin/remove/user?uname=${username}`
         const token = getUserInformationFromLocalStorage().accessToken;
         const response = await axios.delete(UPDATE_URL, {
             headers: {"Authorization": `Bearer ${token}`}
@@ -44,7 +44,7 @@ export const removeUser = async (username) => {
 
 export const logout = async () => {
     try {
-        const LOGOUT_URL = `${URL_PREFIX}/api/auth/logout`
+        const LOGOUT_URL = `${AUTH_URL_PREFIX}/api/auth/logout`
         const token = getUserInformationFromLocalStorage().accessToken;
         const response = await axios.post(LOGOUT_URL, {}, {headers: {"Authorization": `Bearer ${token}`}});
 
@@ -63,7 +63,7 @@ export const logout = async () => {
 
 export const findAllUserCount = async () => {
     try {
-        const ALL_USER_COUNT_URL = `${URL_PREFIX}/api/admin/find/user/all/count`
+        const ALL_USER_COUNT_URL = `${AUTH_URL_PREFIX}/api/admin/find/user/all/count`
         const token = getUserInformationFromLocalStorage().accessToken;
         const response = await axios.get(ALL_USER_COUNT_URL, {headers: {"Authorization": `Bearer ${token}`}});
         return response.data
@@ -75,7 +75,7 @@ export const findAllUserCount = async () => {
 
 export const findNewUsersLastNday = async (day) => {
     try {
-        const NEW_USER_COUNT_URL = `${URL_PREFIX}/api/admin/find/user/all/new?n=${day}`
+        const NEW_USER_COUNT_URL = `${AUTH_URL_PREFIX}/api/admin/find/user/all/new?n=${day}`
         const token = getUserInformationFromLocalStorage().accessToken;
         const response = await axios.get(NEW_USER_COUNT_URL, {headers: {"Authorization": `Bearer ${token}`}});
         return response.data
@@ -87,7 +87,7 @@ export const findNewUsersLastNday = async (day) => {
 
 export const findUsersWitKeyword = async (page, word) => {
     try {
-        const LOGIN_URL = `${URL_PREFIX}/api/admin/find/all/contains/page?p=${page}&word=${word}`
+        const LOGIN_URL = `${AUTH_URL_PREFIX}/api/admin/find/all/contains/page?p=${page}&word=${word}`
         const token = getUserInformationFromLocalStorage().accessToken;
         const response = await axios.get(LOGIN_URL, {headers: {"Authorization": `Bearer ${token}`}});
         return response.data.object.users
