@@ -1,0 +1,72 @@
+.project-page-side-component {
+    float: left;
+    width: 15%;
+    background-color: rgb(154, 179, 182) !important;
+}
+
+.project-page-projecttable {
+    overflow-y: scroll;
+
+    padding: 1rem;
+    float: right;
+    width: 84% !important;
+    height: 100vh;
+    margin-left: 3px;
+    border: 2px solid rgba(34, 36, 38, .15);
+}
+
+.filter {
+    margin-bottom: 30px;
+}
+
+.project-page-root {
+
+}
+
+/* Small devices (landscape phones) */
+@media (max-width: 576px) {
+    .project-page-side-component {
+        float: left;
+        width: 25%;
+        background-color: rgb(154, 179, 182) !important;
+    }
+
+    .project-page-projecttable {
+        /*overflow-y: scroll;*/
+        padding: 1rem;
+        float: right;
+        width: 65% !important;
+        height: 100vh;
+        margin-left: 3px;
+        border: 2px solid rgba(34, 36, 38, .15);
+    }
+
+    .filter {
+        margin-bottom: 30px;
+    }
+
+}
+
+/* Medium devices (tablets) */
+@media (min-width: 576px) and (max-width: 768px) {
+    .project-page-side-component {
+        float: left;
+        width: 25%;
+        background-color: rgb(154, 179, 182) !important;
+    }
+
+    .project-page-projecttable {
+        /*overflow: auto;*/
+        padding: 1rem;
+        float: right;
+        width: 74% !important;
+        height: 100vh;
+        margin-left: 3px;
+        border: 2px solid rgba(34, 36, 38, .15);
+    }
+
+    .filter {
+        margin-bottom: 30px;
+    }
+
+}

@@ -64,7 +64,7 @@ const SidebarComponent = () => {
                         <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                             <li>
                                 {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                                <a href="#"
+                                <a href="/projects"
                                    className="link-body-emphasis d-inline-flex text-decoration-none rounded">Projects</a>
                             </li>
                         </ul>

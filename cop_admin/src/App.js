@@ -6,10 +6,12 @@ import store from "./store";
 import UsersComponent from "./components/UsersComponent";
 import EditUserComponent from "./components/EditUserComponent";
 import RoleManagementComponent from "./components/RoleManagementComponent";
+import ProjectsComponent from "./components/ProjectsComponent";
 
 const router = createBrowserRouter([
     {path: '/', element: <LoginPageComponent/>},
     {path: '/home', element: <MainPage/>},
+    {path: '/projects', element: <ProjectsComponent/>},
     {path: '/users', element: <UsersComponent/>},
     {path: '/authorizate-management', element: <RoleManagementComponent/>},
     {path: '/edit-user', element: <EditUserComponent/>}
