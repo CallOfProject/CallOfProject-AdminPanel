@@ -3,12 +3,12 @@ import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
 import React, {useState} from "react";
 import './SearchAndFilter.css'
 import {useDispatch} from "react-redux";
 import {userTableActions} from "../store";
 import {findUsersWitKeyword} from "../service/UserService";
+import {Badge} from "react-bootstrap";
 
 const addAll = ({dispatch}, users) => dispatch(userTableActions.addAll(users))
 const SearchAndFilterComponent = ({title}) => {
@@ -37,26 +37,17 @@ const SearchAndFilterComponent = ({title}) => {
                 <Navbar.Brand style={{fontWeight: "700", fontSize: "16pt"}} href="#">{title}</Navbar.Brand>
                 <Navbar.Toggle aria-controls="navbarScroll"/>
                 <Navbar.Collapse id="navbarScroll">
-                    <Nav
-                        className="me-auto my-2 my-lg-0"
-                        style={{maxHeight: '100px'}}
-                        navbarScroll>
+                    <Nav/>
 
-                        <NavDropdown title="Root User" id="navbarScrollingDropdown" disabled={true}>
-                            <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
-                            <NavDropdown.Item href="#action4">
-                                Another action
-                            </NavDropdown.Item>
-                            <NavDropdown.Divider/>
-                            <NavDropdown.Item href="#action5">
-                                Something else here
-                            </NavDropdown.Item>
-                        </NavDropdown>
-
-                        <Nav.Link href="#">
-                            Link
+                    <Nav className="me-auto my-2 my-lg-0" style={{
+                        maxHeight: '100px', borderStyle: "solid", borderRadius: "50px"
+                    }} navbarScroll>
+                        <Nav.Link style={{fontSize: "13pt", fontWeight: "550", color: "black"}}>
+                            Notifications
+                            <Badge bg="danger" pill style={{marginLeft: '5px'}}>14</Badge>
                         </Nav.Link>
                     </Nav>
+
                     <Form className="d-flex">
                         <Form.Control
                             type="search"

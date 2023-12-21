@@ -4,10 +4,11 @@ import axios from "axios";
 
 export const findProjects = async (page) => {
     try {
-        const LOGIN_URL = `${PROJECT_URL_PREFIX}/api/admin/find/all/page?p=${page}`
-        const token = getUserInformationFromLocalStorage().accessToken;
-        const response = await axios.get(LOGIN_URL, {headers: {"Authorization": `Bearer ${token}`}});
-        return response.data.object.users
+        const LOGIN_URL = `${PROJECT_URL_PREFIX}/api/admin/project/all?p=${page}`
+        /*const token = getUserInformationFromLocalStorage().accessToken;*/
+        const response = await axios.get(LOGIN_URL);
+        console.log("AADASDSA: ", response)
+        return response.data.object.project_overviews
     } catch (error) {
         console.log(error)
     }

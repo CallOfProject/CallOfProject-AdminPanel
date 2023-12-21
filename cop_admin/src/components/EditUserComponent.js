@@ -19,7 +19,7 @@ const EditUserComponent = ({userInfo, show, setShow, setUserInfo}) => {
     const [firstName, setFirstName] = useState()
     const [middleName, setMiddleName] = useState("")
     const [lastName, setLastName] = useState()
-    const [birthDate, setbirthDate] = useState()
+    const [birthDate, setBirthDate] = useState()
     const [isBlocked, setBlocked] = useState(false)
     const dispatch = useDispatch()
 
@@ -28,12 +28,13 @@ const EditUserComponent = ({userInfo, show, setShow, setUserInfo}) => {
     const handleClose = () => setShow(false);
 
     useEffect(() => {
+        console.log("INFO: ", userInfo)
         setFirstName(userInfo.first_name)
         setMiddleName(userInfo.middle_name)
         setLastName(userInfo.last_name)
         setEmail(userInfo.email)
         setBlocked(userInfo.is_account_blocked)
-        setbirthDate(userInfo.birth_date.split('-').reverse().join('/'))
+        setBirthDate(userInfo.birth_date.split('-').reverse().join('/'))
     }, [userInfo]);
 
     const handleSubmitButton = async () => {
@@ -43,8 +44,10 @@ const EditUserComponent = ({userInfo, show, setShow, setUserInfo}) => {
             if (!firstName || !lastName || !email || !birthDate)
                 NotificationManager.warning("Please fill all blanks!", "Warning")
             else {
-                const updateDTO = new UserUpdateDTO(userInfo.username, firstName, middleName, lastName,
-                    email, isBlocked, birthDate, getUserID())
+
+                const updateDTO = new UserUpdateDTO(getUserID(), userInfo.username, firstName, middleName, lastName,
+                    email, isBlocked, birthDate)
+                console.log("DTO: ", updateDTO)
                 const updatedUser = await updateUser(updateDTO);
 
                 updateUserCallback({dispatch}, updatedUser)
@@ -135,7 +138,7 @@ const EditUserComponent = ({userInfo, show, setShow, setUserInfo}) => {
                         <Form.Group controlId="formGridBirthDate">
                             <Form.Label style={{fontWeight: "700"}}>Birth Date</Form.Label>
                             <Form.Control type="date"
-                                          onChange={event => setbirthDate(event.target.value.split('-').reverse().join('/'))}
+                                          onChange={event => setBirthDate(event.target.value.split('-').reverse().join('/'))}
                                           defaultValue={userInfo.birth_date.split('/').reverse().join('-')}/>
                         </Form.Group>
 

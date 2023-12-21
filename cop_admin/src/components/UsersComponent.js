@@ -3,19 +3,14 @@ import UserTableComponent from "./UserTableComponent";
 import {Col} from "react-bootstrap";
 import SidebarComponent from "./SidebarComponent";
 import SearchAndFilterComponent from "./SearchAndFilterComponent";
-import {useState} from "react";
 
 const UsersComponent = () => {
-
-
     return (
         <div className="user-page-root">
             <Col className="user-page-side-component">
                 <SidebarComponent/>
             </Col>
-
             <Col className="user-page-usertable">
-
                 <div className="filter">
                     <SearchAndFilterComponent title={"Admin-Root Page"}/>
                 </div>
@@ -23,7 +18,6 @@ const UsersComponent = () => {
                     <UserTableComponent/>
                 </div>
             </Col>
-
         </div>
     );
 }

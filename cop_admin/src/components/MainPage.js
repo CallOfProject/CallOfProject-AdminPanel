@@ -17,6 +17,5 @@ const MainPage = () => {
             </div>
         </ContextProvider>
     )
-
 }
 export default MainPage;

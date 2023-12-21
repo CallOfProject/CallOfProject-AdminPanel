@@ -7,6 +7,7 @@ import {Table} from "react-bootstrap";
 import EditUserComponent from "./EditUserComponent";
 import Button from "react-bootstrap/Button";
 import {projectTableActions} from "../store";
+import {findProjects} from "../service/ProjectService";
 
 
 const load = ({dispatch}, projects) => dispatch(projectTableActions.load(projects))
@@ -15,7 +16,7 @@ const deleteProject = ({dispatch}, project) => dispatch(projectTableActions.remo
 
 const ProjectTableComponent = () => {
     const dispatch = useDispatch()
-    const projects = useSelector(state => state.projectTable.users)
+    const projects = useSelector(state => state.projectTable.projects)
 
     const [clickedEdit, setClickedEdit] = useState(false);
     const [show, setShow] = useState(false);
@@ -25,17 +26,18 @@ const ProjectTableComponent = () => {
 
     useEffect(() => {
         removeAllProjects({dispatch})
+        console.log("useEffect")
         fetchData();
     }, []);
 
 
     const fetchData = async () => {
-        /*try {
+        try {
 
             setTimeout(async () => {
-                const newUsers = await findUsers(page);
-                if (newUsers.length > 0) {
-                    load({dispatch}, newUsers)
+                const newProjects = await findProjects(page);
+                if (newProjects.length > 0) {
+                    load({dispatch}, newProjects)
                     setPage(page + 1)
                 } else {
                     setHasMore(false);
@@ -43,7 +45,7 @@ const ProjectTableComponent = () => {
             }, 1000);
         } catch (error) {
             console.error("Error fetching data:", error);
-        }*/
+        }
     };
 
     const handleEditButton = (usr) => {
@@ -81,6 +83,7 @@ const ProjectTableComponent = () => {
                     <tr>
                         <th>#</th>
                         <th>Project Title</th>
+                        <th>Project Owner</th>
                         <th>Participant Count</th>
                         <th>Start Date</th>
                         <th>Edit</th>
@@ -91,9 +94,10 @@ const ProjectTableComponent = () => {
                     {projects.map((project, idx) => (
                         <tr key={idx}>
                             <td>{idx + 1}</td>
-                            <td>{project.projectTitle}</td>
-                            <td>{project.participantCount}</td>
-                            <td>{project.startDate}</td>
+                            <td>{project.project_title}</td>
+                            <td>{project.project_owner_name}</td>
+                            <td>{project.max_participant}</td>
+                            <td>{project.start_date}</td>
                             <td style={{float: "left", width: "100%"}}>
                                 <Button className="btn-sm" style={{marginRight: "20px"}}
                                         onClick={() => handleEditButton(project)}>

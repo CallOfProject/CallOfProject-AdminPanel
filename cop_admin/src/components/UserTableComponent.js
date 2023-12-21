@@ -58,6 +58,7 @@ const UserTableComponent = () => {
     const handleRemoveButton = async user => {
         try {
             const isRemoved = await removeUser(user.username);
+            console.log("removed: ", isRemoved)
             if (isRemoved) {
                 deleteUser({dispatch}, user.username)
                 NotificationManager.success("User removed Successfully!", "Success")

@@ -1,7 +1,7 @@
 export class UserUpdateDTO {
 
-    constructor(username,first_name, middle_name, last_name, email, is_account_blocked, birth_date, userId) {
-        this.userId = userId
+    constructor(admin_id, username, first_name, middle_name, last_name, email, is_account_blocked, birth_date) {
+        this.admin_id = admin_id;
         this.first_name = first_name;
         this.username = username;
         this.middle_name = middle_name;
@@ -9,8 +9,6 @@ export class UserUpdateDTO {
         this.email = email;
         this.is_account_blocked = is_account_blocked;
         this.birth_date = birth_date;
-
-        console.log(this)
     }
 
 }
