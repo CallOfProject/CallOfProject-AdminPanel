@@ -4,10 +4,10 @@ import {removeUser} from "../service/UserService";
 import {NotificationContainer, NotificationManager} from "react-notifications";
 import InfiniteScroll from "react-infinite-scroll-component";
 import {Table} from "react-bootstrap";
-import EditUserComponent from "./EditUserComponent";
 import Button from "react-bootstrap/Button";
 import {projectTableActions} from "../store";
 import {findProjects} from "../service/ProjectService";
+import ProjectEditComponent from "./ProjectEditComponent";
 
 
 const load = ({dispatch}, projects) => dispatch(projectTableActions.load(projects))
@@ -22,11 +22,10 @@ const ProjectTableComponent = () => {
     const [show, setShow] = useState(false);
     const [hasMore, setHasMore] = useState(true);
     const [page, setPage] = useState(1);
-    const [editUser, setEditUser] = useState(null);
+    const [editProject, setEditProject] = useState(null);
 
     useEffect(() => {
         removeAllProjects({dispatch})
-        console.log("useEffect")
         fetchData();
     }, []);
 
@@ -51,7 +50,7 @@ const ProjectTableComponent = () => {
     const handleEditButton = (usr) => {
         setShow(true);
         setClickedEdit(true);
-        setEditUser(usr);
+        setEditProject(usr);
     };
 
     const handleRemoveButton = async user => {
@@ -77,8 +76,8 @@ const ProjectTableComponent = () => {
                 scrollableTarget="scrollableDiv"
             >
                 <Table striped className="table-primary table-responsive user-table table-hover table-bordered">
-                    {clickedEdit && <EditUserComponent setClickEdit={setClickedEdit} show={show} setShow={setShow}
-                                                       userInfo={editUser} setUserInfo={setEditUser}/>}
+                    {clickedEdit && <ProjectEditComponent setClickEdit={setClickedEdit} show={show} setShow={setShow}
+                                                       editProject={editProject} setEditProject={setEditProject}/>}
                     <thead style={{textAlign: "center", backgroundColor: "rgb(154, 179, 182)"}}>
                     <tr>
                         <th>#</th>

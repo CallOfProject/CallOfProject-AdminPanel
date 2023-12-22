@@ -60,7 +60,6 @@ const EditUserComponent = ({userInfo, show, setShow, setUserInfo}) => {
     };
     return (
         <div>
-
             <Modal
                 className="edit-user-modal"
                 show={show}

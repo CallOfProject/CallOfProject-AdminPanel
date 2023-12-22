@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import './Sidebar.css'
-import cop_logo from '../images/cop_logo.png'
+import cop_logo from '../images/new_logo.png'
 import {logout} from "../service/UserService";
 import {Navigate} from "react-router-dom";
 import {getRole} from "../dto/UserDTO";
@@ -31,7 +31,7 @@ const SidebarComponent = () => {
             {logoutSuccess && <Navigate to={"/"}/>}
             <a href="/home"
                className="d-flex align-items-center pb-3 mb-3 link-body-emphasis text-decoration-none border-bottom">
-                <img className="cop-image" src={cop_logo} height="100px" width="280px" alt="cop_logo"/>
+                <img className="cop-image" src={cop_logo} height="100px" width="1   80px" alt="cop_logo"/>
             </a>
 
             <ul className="list-unstyled ps-0 sidebar-component-list">

@@ -1,0 +1,21 @@
+.edit-project-modal {
+    display: flex;
+    align-items: center; /* Vertically center the modal */
+    justify-content: center; /* Horizontally center the modal */
+    position: fixed; /* Position fixed to stay in place */
+    top: 0; /* Start from the top of the viewport */
+    left: 0; /* Start from the left of the viewport */
+    width: 100%; /* Full width of the viewport */
+    height: 100%; /* Full height of the viewport */
+    background-color: rgba(0, 0, 0, 0.4); /* Optional: Overlay background */
+}
+
+.modal-90w {
+    max-width: 90%; /* Maximum width of the modal */
+    max-height: 90%; /* Maximum height of the modal */
+    overflow-y: auto; /* Scrollbar if content exceeds modal's height */
+}
+
+.edit-project-body {
+    /* Additional styles if needed */
+}
