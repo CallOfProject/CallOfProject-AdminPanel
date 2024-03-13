@@ -7,6 +7,7 @@ import {Calendar} from "primereact/calendar";
 import {Nullable} from "primereact/ts-helpers";
 import './EditUser.css'
 import cop_logo from '../../assets/new_logo.png'
+import {InputSwitch} from "primereact/inputswitch";
 interface EditUserComponentProps {
     openUserEditDialog: boolean;
     setOpenUserEditDialog: (isOpen: boolean) => void;
@@ -62,7 +63,10 @@ const EditUserComponent: FC<EditUserComponentProps> = ({openUserEditDialog, setO
                         <Calendar id="birthDate" dateFormat="dd/mm/yy" value={date} onChange={(e) => setDate(e.value)}
                                   showIcon/>
                     </div>
-
+                    <div className="flex flex-column gap-2" style={{margin: '15px'}}>
+                        <label className="font-bold" htmlFor="blocked">Block User</label>
+                        <InputSwitch id="blocked" checked={false} />
+                    </div>
                 </div>
             </Dialog>
         </div>
