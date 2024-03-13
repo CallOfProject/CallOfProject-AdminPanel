@@ -1,14 +1,15 @@
-import {PROJECT_URL_PREFIX} from "../ConnectionUtil";
 import {getUserInformationFromLocalStorage} from "../dto/UserDTO";
 import axios from "axios";
+import {PREFIX} from "../ConnectionUtil";
 
 export const findProjects = async (page) => {
     try {
-        const LOGIN_URL = `${PROJECT_URL_PREFIX}/api/admin/project/all?p=${page}`
-        /*const token = getUserInformationFromLocalStorage().accessToken;*/
-        const response = await axios.get(LOGIN_URL);
-        console.log("AADASDSA: ", response)
-        return response.data.object.project_overviews
+        const LOGIN_URL = `${PREFIX}/api/project/admin/all?p=${page}`
+        const token = getUserInformationFromLocalStorage().accessToken;
+        const response = await axios.get(LOGIN_URL, {
+            headers: {"Authorization": `Bearer ${token}`}
+        });
+        return response.data
     } catch (error) {
         console.log(error)
     }
@@ -17,7 +18,7 @@ export const findProjects = async (page) => {
 
 export const updateProject = async (userUpdateDTO) => {
     try {
-        const UPDATE_URL = `${PROJECT_URL_PREFIX}/api/admin/update/user`
+        const UPDATE_URL = `${PREFIX}/api/project/admin/update/user`
         const token = getUserInformationFromLocalStorage().accessToken;
         const response = await axios.put(UPDATE_URL, userUpdateDTO, {headers: {"Authorization": `Bearer ${token}`}});
         console.log("H: ", response.data.object)
@@ -30,7 +31,7 @@ export const updateProject = async (userUpdateDTO) => {
 
 export const removeProjects = async (username) => {
     try {
-        const UPDATE_URL = `${PROJECT_URL_PREFIX}/api/admin/remove/user?uname=${username}`
+        const UPDATE_URL = `${PREFIX}/api/project/admin/remove/user?uname=${username}`
         const token = getUserInformationFromLocalStorage().accessToken;
         const response = await axios.delete(UPDATE_URL, {
             headers: {"Authorization": `Bearer ${token}`}
@@ -45,7 +46,7 @@ export const removeProjects = async (username) => {
 
 export const findProjectsWitKeyword = async (page, word) => {
     try {
-        const LOGIN_URL = `${PROJECT_URL_PREFIX}/api/admin/find/all/contains/page?p=${page}&word=${word}`
+        const LOGIN_URL = `${PREFIX}/api/project/admin/find/all/contains/page?p=${page}&word=${word}`
         const token = getUserInformationFromLocalStorage().accessToken;
         const response = await axios.get(LOGIN_URL, {headers: {"Authorization": `Bearer ${token}`}});
         return response.data.object.users

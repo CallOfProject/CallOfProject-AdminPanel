@@ -11,8 +11,10 @@ const DrillDownChartComponent = () => {
     const [chartOptions, setChartOptions] = useState({
         animationEnabled: true,
         theme: "light2",
-        backgroundColor: "rgb(193, 219, 222)",
+        backgroundColor: "#1c1c1c",
+        color: "white",
         title: {
+            color: "white",
             text: "New Users vs Existing Users"
         },
         subtitles: [{
@@ -58,10 +60,9 @@ const DrillDownChartComponent = () => {
     return (
         <div>
             <CanvasJSChart
-
                 options={chartOptions}
                 onRef={ref => chartRef.current = ref}
-                style={{width: "50%", height: "100px", backgroundColor: "black"}}
+                style={{width: "50%", height: "100px", backgroundColor: "black", color: "white"}}
             />
         </div>
     );

@@ -1,0 +1,16 @@
+.custom-modal-body {
+    background-color: rgb(193, 219, 222);
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Resimi yatayda ortalar */
+    justify-content: center; /* Resimi dikeyde ortalar */
+}
+
+.profile-image {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 1rem;
+}

@@ -20,9 +20,9 @@ const AdminMainPageComponent = () => {
     return (
         <div className="admin-page-root">
             <SummaryInformationComponent/>
-            <div>
+          {/*  <div>
                 <DrillDownChartComponent/>
-            </div>
+            </div>*/}
         </div>
     );
 }

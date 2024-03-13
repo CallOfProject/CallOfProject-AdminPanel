@@ -10,6 +10,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {userTableActions} from "../store";
 import 'react-notifications/lib/notifications.css'
 import {NotificationContainer, NotificationManager} from 'react-notifications';
+import EditUserProfileComponent from "./EditUserProfileComponent";
 
 const load = ({dispatch}, users) => dispatch(userTableActions.load(users))
 const removeAllUsers = ({dispatch}) => dispatch(userTableActions.removeAll())
@@ -21,10 +22,12 @@ const UserTableComponent = () => {
     const users = useSelector(state => state.userTable.users)
 
     const [clickedEdit, setClickedEdit] = useState(false);
+    const [clickedProfileEdit, setClickedProfileEdit] = useState(false);
     const [show, setShow] = useState(false);
     const [hasMore, setHasMore] = useState(true);
     const [page, setPage] = useState(1);
     const [editUser, setEditUser] = useState(null);
+    const [editUserProfile, setEditUserProfile] = useState(null);
 
     useEffect(() => {
         removeAllUsers({dispatch})
@@ -62,11 +65,15 @@ const UserTableComponent = () => {
             if (isRemoved) {
                 deleteUser({dispatch}, user.username)
                 NotificationManager.success("User removed Successfully!", "Success")
-            }
-            else NotificationManager.error("Permission Denied", "Permission denied!")
+            } else NotificationManager.error("Permission Denied", "Permission denied!")
         } catch (error) {
             NotificationManager.error("Permission Denied", "Permission denied!")
         }
+    };
+    const handleProfileEditButton = (usr) => {
+        setShow(true);
+        setClickedProfileEdit(true);
+        setEditUserProfile(usr);
     };
     return (
         <div id="scrollableDiv" style={{height: "800px", overflowY: "auto", border: "2px solid rgba(34, 36, 38, .15)"}}>
@@ -82,6 +89,11 @@ const UserTableComponent = () => {
                 <Table striped className="table-primary table-responsive user-table table-hover table-bordered">
                     {clickedEdit && <EditUserComponent setClickEdit={setClickedEdit} show={show} setShow={setShow}
                                                        userInfo={editUser} setUserInfo={setEditUser}/>}
+
+                    {clickedProfileEdit && <EditUserProfileComponent setClickEditProfile={setClickedProfileEdit} setUserInfo={setEditUserProfile}
+                                                                     userInfo={editUserProfile} show={show}
+                                                                     setShow={setShow}/>}
+
                     <thead style={{textAlign: "center", backgroundColor: "rgb(154, 179, 182)"}}>
                     <tr>
                         <th>#</th>
@@ -90,12 +102,15 @@ const UserTableComponent = () => {
                         <th>Email</th>
                         <th>Creation Date</th>
                         <th>Birth Date</th>
-                        <th>Active</th>
-                        <th>Edit</th>
+                        <th>Blocked</th>
+                        <th>Removed</th>
+                        <th>User Edit</th>
+                        <th>Profile Edit</th>
                         <th>Remove</th>
                     </tr>
                     </thead>
                     <tbody style={{textAlign: "center", color: "white"}}>
+
                     {users.map((usr, idx) => (
                         <tr key={idx}>
                             <td>{idx + 1}</td>
@@ -111,18 +126,38 @@ const UserTableComponent = () => {
                                     <Form.Check.Input type={"radio"} isValid checked={true}/>
                                 </Form.Check>}
                             </td>
+
+                            <td>
+                                {usr.deleted_at ? <Form.Check type={"radio"}>
+                                    <Form.Check.Input type={"radio"} isInvalid checked={true}/>
+                                </Form.Check> : <Form.Check type={"radio"}>
+                                    <Form.Check.Input type={"radio"} isValid checked={true}/>
+                                </Form.Check>}
+                            </td>
                             <td style={{float: "left", width: "100%"}}>
                                 <Button className="btn-sm" style={{marginRight: "20px"}}
                                         onClick={() => handleEditButton(usr)}>
                                     Edit
                                 </Button>
                             </td>
+
+
+                            <td>
+                                <Button className="btn-sm" style={{marginRight: "20px"}}
+                                        onClick={() => handleProfileEditButton(usr)}>
+                                    Profile Edit
+                                </Button>
+                            </td>
+
+
                             <td>
                                 <Button className="btn-sm" variant="danger"
                                         onClick={() => handleRemoveButton(usr)}>
                                     Remove
                                 </Button>
                             </td>
+
+
                         </tr>
                     ))}
                     </tbody>

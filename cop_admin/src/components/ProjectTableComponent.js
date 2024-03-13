@@ -1,7 +1,6 @@
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
-import {removeUser} from "../service/UserService";
-import {NotificationContainer, NotificationManager} from "react-notifications";
+import {NotificationContainer} from "react-notifications";
 import InfiniteScroll from "react-infinite-scroll-component";
 import {Table} from "react-bootstrap";
 import Button from "react-bootstrap/Button";
@@ -35,6 +34,10 @@ const ProjectTableComponent = () => {
 
             setTimeout(async () => {
                 const newProjects = await findProjects(page);
+                if (newProjects.item_count === 0) {
+                    setHasMore(false);
+                    console.log("No more data")
+                }
                 if (newProjects.length > 0) {
                     load({dispatch}, newProjects)
                     setPage(page + 1)
@@ -54,15 +57,15 @@ const ProjectTableComponent = () => {
     };
 
     const handleRemoveButton = async user => {
-        try {
-            const isRemoved = await removeUser(user.username);
-            if (isRemoved) {
-                deleteProject({dispatch}, user.username)
-                NotificationManager.success("Project removed Successfully!", "Success")
-            } else NotificationManager.error("Permission Denied", "Permission denied!")
-        } catch (error) {
-            NotificationManager.error("Permission Denied", "Permission denied!")
-        }
+        /* try {
+             const isRemoved = await removeUser(user.username);
+             if (isRemoved) {
+                 deleteProject({dispatch}, user.username)
+                 NotificationManager.success("Project removed Successfully!", "Success")
+             } else NotificationManager.error("Permission Denied", "Permission denied!")
+         } catch (error) {
+             NotificationManager.error("Permission Denied", "Permission denied!")
+         }*/
     };
     return (
         <div id="scrollableDiv" style={{height: "800px", overflowY: "auto", border: "2px solid rgba(34, 36, 38, .15)"}}>
@@ -77,7 +80,7 @@ const ProjectTableComponent = () => {
             >
                 <Table striped className="table-primary table-responsive user-table table-hover table-bordered">
                     {clickedEdit && <ProjectEditComponent setClickEdit={setClickedEdit} show={show} setShow={setShow}
-                                                       editProject={editProject} setEditProject={setEditProject}/>}
+                                                          editProject={editProject} setEditProject={setEditProject}/>}
                     <thead style={{textAlign: "center", backgroundColor: "rgb(154, 179, 182)"}}>
                     <tr>
                         <th>#</th>

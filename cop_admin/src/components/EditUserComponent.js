@@ -13,7 +13,7 @@ import 'react-notifications/lib/notifications.css'
 import {getUserID} from "../dto/UserDTO";
 
 const updateUserCallback = ({dispatch}, updatedUser) => dispatch(userTableActions.updateUser(updatedUser))
-const EditUserComponent = ({userInfo, show, setShow, setUserInfo}) => {
+const EditUserComponent = ({userInfo, show, setShow, setClickEdit}) => {
 
     const [email, setEmail] = useState("")
     const [firstName, setFirstName] = useState()
@@ -25,10 +25,12 @@ const EditUserComponent = ({userInfo, show, setShow, setUserInfo}) => {
 
 
     const handleStatus = () => setBlocked(!isBlocked)
-    const handleClose = () => setShow(false);
+    const handleClose = () => {
+        setShow(false);
+        setClickEdit(false);
+    }
 
     useEffect(() => {
-        console.log("INFO: ", userInfo)
         setFirstName(userInfo.first_name)
         setMiddleName(userInfo.middle_name)
         setLastName(userInfo.last_name)

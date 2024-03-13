@@ -1,8 +1,7 @@
 import {createContext, useState} from "react";
-import {useDispatch} from "react-redux";
+
 export const Context = createContext();
-const ContextProvider = props =>
-{
+const ContextProvider = props => {
     const [showContextMenu, setShowContextMenu] = useState(false);
     const [clickCreateLink, setClickCreateLink] = useState(false)
     const [isUpload, setIsUpload] = useState(false)
@@ -11,11 +10,12 @@ const ContextProvider = props =>
     const [share, setShare] = useState(false)
     const [isClose, setIsClose] = useState(false)
     const [isOpenPasswordGenerator, setIsOpenPasswordGenerator] = useState(false)
-    const dispatch = useDispatch();
     const [users, setUsers] = useState([])
+    const [projects, setProjects] = useState([])
 
     return (
         <Context.Provider value={{
+            projects, setProjects,
             showContextMenu, setShowContextMenu,
             clickCreateLink, setClickCreateLink,
             isUpload, setIsUpload,
