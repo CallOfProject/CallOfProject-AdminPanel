@@ -2,83 +2,105 @@ import React, {useEffect, useState} from 'react';
 import {DataTable} from 'primereact/datatable';
 import {Column} from 'primereact/column';
 import './UsersTable.css';
-import {InputSwitch} from "primereact/inputswitch";
-import {Button} from "primereact/button";
 import EditUserComponent from "../edit-user/EditUserComponent";
 import UserProfileComponent from "../user-profile/UserProfileComponent";
-
-interface Customer {
-    fullName: string;
-    username: string;
-    email: string;
-    creationDate: string;
-    blocked: JSX.Element;
-    removed: JSX.Element;
-    edit: JSX.Element;
-    profileEdit: JSX.Element;
-    remove: JSX.Element;
-}
+import {findUsers} from "../../services/UserService";
+import {Role, User} from "../../dto/Models";
+import {InputSwitch} from "primereact/inputswitch";
+import {Button} from "primereact/button";
+import {Nullable} from "primereact/ts-helpers";
 
 const UsersTableComponent = () => {
-    const [customers, setCustomers] = useState<Customer[]>([]);
     const [openUserEditDialog, setOpenUserEditDialog] = useState<boolean>(false);
     const [openUserProfileEditDialog, setOpenUserProfileEditDialog] = useState<boolean>(false);
-
-    const handleUserEditBtn = () => {
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [users, setUsers] = useState<User[]>([]);
+    const [selectedUser, setSelectedUser] = useState<User | Nullable>(null);
+    const handleUserEditBtn = (user: User) => {
+        setSelectedUser(user)
         setOpenUserEditDialog(!openUserEditDialog)
     };
-    const handleUserProfileEditBtn = () => {
+    const handleUserProfileEditBtn = (user: User) => {
+        setSelectedUser(user)
         setOpenUserProfileEditDialog(!openUserProfileEditDialog)
     };
+
+    const fetchData = async () => {
+        const newUsers = await findUsers(currentPage);
+
+        const users = newUsers.map((usr: any) => {
+            const roles = new Array<Role>()
+            usr.roles.map((role: any) => {
+                roles.push(new Role(role.name))
+            })
+
+            return new User(usr.birth_date, usr.creation_date, usr.deleted_at, usr.email, usr.first_name,
+                usr.is_account_blocked, usr.last_name, usr.middle_name, usr.user_id, usr.username, roles)
+        })
+
+        setUsers(users)
+    };
     useEffect(() => {
-        const customersToAdd: Customer[] = [];
-        for (let i = 0; i < 60; i++) {
-            const customer: Customer = {
-                fullName: 'Jane Smith',
-                username: 'janesmith',
-                email: 'jane@example.com',
-                creationDate: '2024-03-11',
-                blocked: <InputSwitch checked={false}/>,
-                removed: <InputSwitch checked={true}/>,
-                edit: <Button type="button" icon="pi pi-pencil" onClick={() => handleUserEditBtn()} rounded outlined/>,
-                profileEdit: <Button type="button" severity="help" onClick={() => handleUserProfileEditBtn()} icon="pi pi-pencil" rounded outlined/>,
-                remove: <Button type="button" severity="danger" icon="pi pi-trash" rounded outlined/>
-            };
-            customersToAdd.push(customer);
-        }
-        setCustomers(customersToAdd);
+        fetchData()
     }, []);
 
+    const userBlockedTemplate = (rowData: any) => {
+        return <div>
+            <InputSwitch checked={rowData.is_account_blocked}/>
+        </div>;
+    }
+
+    const userDeletedAtTemplate = (rowData: any) => {
+        return <div>
+            <InputSwitch checked={rowData.deleted_at}/>
+        </div>;
+    }
+    const userEditTemplate = (user: User) => {
+        return <Button type="button" icon="pi pi-pencil" onClick={() => handleUserEditBtn(user)} rounded outlined/>
+    };
+    const userProfileEditTemplate = (user: User) => {
+        return <Button type="button" severity="help" onClick={() => handleUserProfileEditBtn(user)}
+                       icon="pi pi-pencil" rounded outlined/>
+    };
+    const removeTemplate = () => {
+        return <Button type="button" severity="danger" icon="pi pi-trash" rounded outlined/>
+    };
     return (
         <div className="users-container card">
-            {openUserEditDialog && <EditUserComponent openUserEditDialog={openUserEditDialog}
-                                                      setOpenUserEditDialog={setOpenUserEditDialog}/>}
-            {openUserProfileEditDialog && <UserProfileComponent openUserProfileEditDialog={openUserProfileEditDialog}
+            {openUserEditDialog &&
+                <EditUserComponent selectedUser={selectedUser} openUserEditDialog={openUserEditDialog}
+                                   setOpenUserEditDialog={setOpenUserEditDialog}/>}
+            {openUserProfileEditDialog && <UserProfileComponent userId={selectedUser!.user_id} openUserProfileEditDialog={openUserProfileEditDialog}
                                                                 setOpenUserProfileEditDialog={setOpenUserProfileEditDialog}/>}
             <h2 style={{textAlign: 'center'}}>USER CONTROL PAGE</h2>
             <hr style={{color: '#BBE1FA'}}/>
-            <DataTable value={customers} paginator rows={7}
+            <DataTable value={users} paginator rows={7}
                        selectionMode="single"
                        reorderableRows={true}
                        resizableColumns={true}
                        reorderableColumns={true}
-                       onRowReorder={(e) => setCustomers(e.value)} tableStyle={{minWidth: '50rem'}}
+                       onRowReorder={(e) => setUsers(e.value)} tableStyle={{minWidth: '50rem'}}
                        paginatorTemplate="RowsPerPageDropdown FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
                        currentPageReportTemplate="{first} to {last} of {totalRecords}">
+
                 <Column rowReorder style={{width: '3rem'}}/>
                 <Column field="username" header="Username" alignHeader={"center"}
+                        style={{textAlign: 'center', fontWeight: 'bold'}}></Column>
+                <Column field="email" header="Email" alignHeader={"center"}
+                        style={{textAlign: 'center', fontWeight: 'bold'}}></Column>
+                <Column field="creationDateStr" header="Creation Date" alignHeader={"center"}
+                        style={{textAlign: 'center', fontWeight: 'bold'}}></Column>
+                <Column field="is_account_blocked" header="Is Blocked" alignHeader={"center"} body={userBlockedTemplate}
                         style={{textAlign: 'center'}}></Column>
-                <Column field="email" header="Email" alignHeader={"center"} style={{textAlign: 'center'}}></Column>
-                <Column field="creationDate" header="Creation Date" alignHeader={"center"}
+                <Column field="deleted_at" header="Is Removed" alignHeader={"center"} body={userDeletedAtTemplate}
                         style={{textAlign: 'center'}}></Column>
-                <Column field="blocked" header="Is Blocked" alignHeader={"center"}
-                        style={{textAlign: 'center'}}></Column>
-                <Column field="removed" header="Is Removed" alignHeader={"center"}
-                        style={{textAlign: 'center'}}></Column>
-                <Column field="edit" header="User Edit" alignHeader={"center"} style={{textAlign: 'center'}}></Column>
+                <Column field="edit" header="User Edit" alignHeader={"center"} style={{textAlign: 'center'}}
+                        body={userEditTemplate}/>
                 <Column field="profileEdit" header="Profile Edit" alignHeader={"center"}
+                        body={(evt) => userProfileEditTemplate(evt)}
                         style={{textAlign: 'center'}}></Column>
-                <Column field="remove" header="Remove" alignHeader={"center"} style={{textAlign: 'center'}}>
+                <Column field="remove" header="Remove" alignHeader={"center"} style={{textAlign: 'center'}}
+                        body={removeTemplate}>
                 </Column>
             </DataTable>
         </div>

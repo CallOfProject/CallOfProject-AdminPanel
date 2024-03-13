@@ -37,7 +37,6 @@ const UserTableComponent = () => {
 
     const fetchData = async () => {
         try {
-
             setTimeout(async () => {
                 const newUsers = await findUsers(page);
                 if (newUsers.length > 0) {
