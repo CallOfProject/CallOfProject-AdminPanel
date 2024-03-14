@@ -98,3 +98,14 @@ export interface Link {
     linkId: number
     link: string
 }
+
+export class UserProfileUpdateDTO {
+    public about_me: string
+    public user_id: string
+
+    constructor(about_me: string, user_id: string) {
+        this.about_me = about_me;
+        this.user_id = user_id;
+    }
+
+}

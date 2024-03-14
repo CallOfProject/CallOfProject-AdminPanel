@@ -2,6 +2,7 @@ import {FC, useEffect, useRef, useState} from "react";
 import {Nullable} from "primereact/ts-helpers";
 import {Avatar} from "primereact/avatar";
 import cop_logo from "../../assets/new_logo.png";
+import default_pp from "../../assets/user_pp.webp";
 import {Button} from "primereact/button";
 import {Dialog} from "primereact/dialog";
 import {Image} from 'primereact/image';
@@ -9,8 +10,8 @@ import {FileUpload} from "primereact/fileupload";
 import {Toast} from "primereact/toast";
 import {InputNumber} from "primereact/inputnumber";
 import {InputTextarea} from "primereact/inputtextarea";
-import {findUserProfile} from "../../services/UserService";
-import {UserProfile} from "../../dto/Models";
+import {findUserProfile, updateUserProfile} from "../../services/UserService";
+import {UserProfile, UserProfileUpdateDTO} from "../../dto/Models";
 
 interface EditUserComponentProps {
     openUserProfileEditDialog: boolean;
@@ -24,14 +25,35 @@ const UserProfileComponent: FC<EditUserComponentProps> = ({
                                                               setOpenUserProfileEditDialog
                                                           }) => {
     const toast = useRef<Toast>(null);
-    const [value, setValue] = useState<string>('');
+    const [aboutMe, setAboutMe] = useState<string>('');
     const [userProfile, setUserProfile] = useState<UserProfile | Nullable>(null);
-    const onUpload = () => {
-        /*toast.current.show({ severity: 'info', summary: 'Success', detail: 'File Uploaded' });*/
+    const [photo, setPhoto] = useState<File | null>(null);
+    const [cv, setCv] = useState<File | null>(null);
+    const onPhotoUpload = (event: any) => {
+        const file = event.files[0];
+        setPhoto(file);
+    };
+
+    const onCvUpload = (event: any) => {
+        const file = event.files[0];
+        setCv(file);
+    };
+
+    const handleSave = async () => {
+        try {
+            await updateUserProfile(new UserProfileUpdateDTO(aboutMe, userId), photo, cv);
+            toast.current?.show({severity: 'success', summary: 'Success', detail: 'Profile updated successfully'});
+            // Profili güncelledikten sonra gereken diğer işlemleri yapabilirsiniz
+        } catch (error) {
+            toast.current?.show({severity: 'error', summary: 'Error', detail: 'Failed to update profile'});
+            console.error('Failed to update profile:', error);
+        }
     };
 
     const fetchData = async () => {
+        console.log("User ID: ", userId)
         const profile = await findUserProfile(userId);
+        console.log("Profile: ", profile)
         setUserProfile(profile)
     };
     useEffect(() => {
@@ -49,7 +71,7 @@ const UserProfileComponent: FC<EditUserComponentProps> = ({
         <div>
             <Button outlined label="Close" severity="danger" icon="pi pi-times"
                     onClick={() => setOpenUserProfileEditDialog(false)} autoFocus/>
-            <Button outlined label="Save" icon="pi pi-save" onClick={() => setOpenUserProfileEditDialog(false)}
+            <Button outlined label="Save" icon="pi pi-save" onClick={() => handleSave()}
                     autoFocus/>
         </div>
 
@@ -60,13 +82,16 @@ const UserProfileComponent: FC<EditUserComponentProps> = ({
             <Dialog visible={openUserProfileEditDialog} modal header={headerElement} footer={footerContent}
                     onHide={() => setOpenUserProfileEditDialog(false)} style={{overflow: 'auto'}}>
                 <div className="card flex justify-content-center">
-                    <Image src={userProfile?.profile_photo} alt="Image" preview width="300"/>
+                    <Image src={userProfile?.profile_photo ? userProfile?.profile_photo : default_pp} alt="Image"
+                           preview width="300"/>
                 </div>
                 <br/>
                 <div className="card flex justify-content-center">
                     <Toast ref={toast}></Toast>
-                    <FileUpload mode="basic" name="demo[]" url="/api/upload" accept="image/*" maxFileSize={1000000}
-                                onUpload={onUpload} chooseLabel={"Select Image"}/>
+                    <input type="file" accept="image/*" onChange={(e) => {
+                        const file = e.target.files![0];
+                        setPhoto(file);
+                    }}/>
                 </div>
 
 
@@ -100,7 +125,7 @@ const UserProfileComponent: FC<EditUserComponentProps> = ({
                     <div className="card flex justify-content-center">
                         <span className="p-float-label">
                             <InputTextarea id="aboutMe" value={userProfile?.about_me}
-                                           onChange={(e) => setValue(e.target.value)}
+                                           onChange={(e) => setAboutMe(e.target.value)}
                                            style={{width: '100%'}} autoResize
                                            rows={5}
                                            cols={60}/>
@@ -114,27 +139,30 @@ const UserProfileComponent: FC<EditUserComponentProps> = ({
 
                         <div className="flex flex-column gap-2" style={{margin: '15px', textAlign: 'center'}}>
                             <label className="font-bold" htmlFor="cv">Upload CV</label>
-                            <FileUpload mode="basic" name="demo[]" url="/api/upload" accept="image/*"
-                                        maxFileSize={1000000} onUpload={onUpload} auto chooseLabel="Browse"/>
+                            <input type="file" accept="application/pdf" onChange={(e) => {
+                                const file = e.target.files![0];
+                                setCv(file);
+                            }}/>
                         </div>
 
 
-                <div className="flex flex-column gap-2" style={{margin: '15px', textAlign: 'center'}}>
-                    <label className="font-bold" htmlFor="downloadCv">Download CV</label>
+                        <div className="flex flex-column gap-2" style={{margin: '15px', textAlign: 'center'}}>
+                            <label className="font-bold" htmlFor="downloadCv">Download CV</label>
 
-                    <a href={userProfile?.cv} download style={{color: "black"}}>
-                        <Button disabled={userProfile?.cv === null} label="Download" icon="pi pi-download" className="p-button-primary"/>
-                    </a>
+                            <a href={userProfile?.cv} download style={{color: "black"}}>
+                                <Button disabled={userProfile?.cv == null} label="Download" icon="pi pi-download"
+                                        className="p-button-primary"/>
+                            </a>
+
+                        </div>
+
+                    </div>
+
 
                 </div>
-
+            </Dialog>
         </div>
-
-
-</div>
-</Dialog>
-</div>
-)
+    )
 }
 
 export default UserProfileComponent;
