@@ -2,14 +2,21 @@ import axios from "axios";
 import {getUserInformationFromLocalStorage} from "../dto/UserDTO";
 import {PREFIX} from "../util/ConnectionUtil";
 import {UserUpdateDTO} from "../dto/UserUpdateDTO";
-import {UserProfile, UserProfileUpdateDTO} from "../dto/Models";
+import {Role, User, UserProfile, UserProfileUpdateDTO} from "../dto/Models";
 
 export const findUsers = async (page: number) => {
     try {
         const LOGIN_URL = `${PREFIX}/api/auth/admin/find/all/page?p=${page}`
         const token = getUserInformationFromLocalStorage().accessToken;
         const response = await axios.get(LOGIN_URL, {headers: {"Authorization": `Bearer ${token}`}});
-        return response.data.object.users
+        return response.data.object.users.map((usr: any) => {
+            const roles = new Array<Role>()
+            usr.roles.forEach((role: any) => {
+                roles.push(new Role(role.name))
+            })
+            return new User(usr.birth_date, usr.creation_date, usr.deleted_at, usr.email, usr.first_name,
+                usr.is_account_blocked, usr.last_name, usr.middle_name, usr.user_id, usr.username, roles)
+        })
     } catch (error) {
         console.log(error)
     }
@@ -48,26 +55,23 @@ export const updateUser = async (userUpdateDTO: UserUpdateDTO) => {
 export const updateUserProfile = async (userUpdateDTO: UserProfileUpdateDTO, photo: File | null, cv: File | null) => {
     try {
         const formData = new FormData();
-        //formData.append('dto', JSON.stringify(userUpdateDTO));
-        console.log("User Update DTO: ", userUpdateDTO)
-        formData.append("user_id", userUpdateDTO.user_id)
-        formData.append("about_me", userUpdateDTO.about_me)
+
+        console.log("UserUpdateDTO: ", userUpdateDTO)
+
+        formData.append('dto', JSON.stringify(userUpdateDTO))
+
         if (photo) {
-            console.log("Photo: ", photo.name)
             formData.append('photo', photo);
         }
         if (cv) {
-            console.log("CV: ", cv.name)
             formData.append('cv', cv);
         }
-
-        console.log("Form Data: ", formData)
 
         const UPDATE_URL = `${PREFIX}/api/auth/users/update/user/profile`
         const token = getUserInformationFromLocalStorage().accessToken;
         const response = await axios.post(UPDATE_URL, formData, {
             headers: {
-                'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${token}`,
             }
         });
 

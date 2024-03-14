@@ -1,14 +1,17 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {DataTable} from 'primereact/datatable';
 import {Column} from 'primereact/column';
 import './UsersTable.css';
 import EditUserComponent from "../edit-user/EditUserComponent";
 import UserProfileComponent from "../user-profile/UserProfileComponent";
-import {findUsers} from "../../services/UserService";
-import {Role, User} from "../../dto/Models";
+import {findUsers, removeUser} from "../../services/UserService";
+import {User} from "../../dto/Models";
 import {InputSwitch} from "primereact/inputswitch";
 import {Button} from "primereact/button";
 import {Nullable} from "primereact/ts-helpers";
+import {showErrorMessage, showInfoMessage, showSuccessMessage} from "../../util/Notification";
+import {Toast} from "primereact/toast";
+import {ConfirmPopup, confirmPopup} from "primereact/confirmpopup";
 
 const UsersTableComponent = () => {
     const [openUserEditDialog, setOpenUserEditDialog] = useState<boolean>(false);
@@ -16,6 +19,7 @@ const UsersTableComponent = () => {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [users, setUsers] = useState<User[]>([]);
     const [selectedUser, setSelectedUser] = useState<User | Nullable>(null);
+    const toast = useRef<Toast>(null);
     const handleUserEditBtn = (user: User) => {
         setSelectedUser(user)
         setOpenUserEditDialog(!openUserEditDialog)
@@ -25,20 +29,13 @@ const UsersTableComponent = () => {
         setOpenUserProfileEditDialog(!openUserProfileEditDialog)
     };
 
+
+    const reject = () => {
+        showInfoMessage(toast, "Rejected", "User not removed")
+    };
+
     const fetchData = async () => {
-        const newUsers = await findUsers(currentPage);
-
-        const users = newUsers.map((usr: any) => {
-            const roles = new Array<Role>()
-            usr.roles.map((role: any) => {
-                roles.push(new Role(role.name))
-            })
-
-            return new User(usr.birth_date, usr.creation_date, usr.deleted_at, usr.email, usr.first_name,
-                usr.is_account_blocked, usr.last_name, usr.middle_name, usr.user_id, usr.username, roles)
-        })
-
-        setUsers(users)
+        setUsers(await findUsers(currentPage))
     };
     useEffect(() => {
         fetchData()
@@ -62,16 +59,47 @@ const UsersTableComponent = () => {
         return <Button type="button" severity="help" onClick={() => handleUserProfileEditBtn(user)}
                        icon="pi pi-pencil" rounded outlined/>
     };
+
+    const confirmRemoveUser = async () => {
+        try {
+            const isRemoved = await removeUser(selectedUser!.username);
+            if (isRemoved) {
+                showSuccessMessage(toast, "Success", "User removed successfully")
+            } else showErrorMessage(toast, "Permission Denied", "Permission denied!")
+        } catch (error) {
+            showErrorMessage(toast, "Permission Denied", "Permission denied!")
+        }
+    };
+
+
+    const handleRemoveButton = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+
+        confirmPopup({
+            target: event.currentTarget,
+            message: 'Are you sure you want to remove user?',
+            icon: 'pi pi-exclamation-triangle',
+            defaultFocus: 'accept',
+            accept() {
+                confirmRemoveUser()
+            },
+            reject
+        });
+
+    };
     const removeTemplate = () => {
-        return <Button type="button" severity="danger" icon="pi pi-trash" rounded outlined/>
+        return <Button type="button" severity="danger" icon="pi pi-trash" onClick={handleRemoveButton} rounded
+                       outlined/>
     };
     return (
         <div className="users-container card">
+            <ConfirmPopup/>
+            <Toast ref={toast}></Toast>
             {openUserEditDialog &&
                 <EditUserComponent selectedUser={selectedUser} openUserEditDialog={openUserEditDialog}
                                    setOpenUserEditDialog={setOpenUserEditDialog}/>}
-            {openUserProfileEditDialog && <UserProfileComponent userId={selectedUser!.user_id} openUserProfileEditDialog={openUserProfileEditDialog}
-                                                                setOpenUserProfileEditDialog={setOpenUserProfileEditDialog}/>}
+            {openUserProfileEditDialog &&
+                <UserProfileComponent selectedUser={selectedUser} openUserProfileEditDialog={openUserProfileEditDialog}
+                                      setOpenUserProfileEditDialog={setOpenUserProfileEditDialog}/>}
             <h2 style={{textAlign: 'center'}}>USER CONTROL PAGE</h2>
             <hr style={{color: '#BBE1FA'}}/>
             <DataTable value={users} paginator rows={7}

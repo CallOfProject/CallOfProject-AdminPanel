@@ -1,9 +1,10 @@
 import {getUserInformationFromLocalStorage} from "../dto/UserDTO";
 import axios from "axios";
 import {PREFIX} from "../util/ConnectionUtil";
-import {UserUpdateDTO} from "../dto/UserUpdateDTO";
+import {ProjectDTO} from "../dto/ProjectDTO";
 
 
+/*
 export const findProjects = async (page: number) => {
     try {
         const LOGIN_URL = `${PREFIX}/api/project/admin/all?p=${page}`
@@ -16,43 +17,49 @@ export const findProjects = async (page: number) => {
         console.log(error)
     }
 }
+*/
 
-
-export const updateProject = async (userUpdateDTO: UserUpdateDTO) => {
+export const findAllProjectsByPage = async (page: number) => {
     try {
-        const UPDATE_URL = `${PREFIX}/api/project/admin/update/user`
+        const PROJECTS_URL = `${PREFIX}/api/project/admin/find/all/page?p=${page}`
         const token = getUserInformationFromLocalStorage().accessToken;
-        const response = await axios.put(UPDATE_URL, userUpdateDTO, {headers: {"Authorization": `Bearer ${token}`}});
-        console.log("H: ", response.data.object)
-        return response.data.object
-    } catch (error) {
-        console.log("D: ", error)
-    }
-}
-
-
-export const removeProjects = async (username: string) => {
-    try {
-        const UPDATE_URL = `${PREFIX}/api/project/admin/remove/user?uname=${username}`
-        const token = getUserInformationFromLocalStorage().accessToken;
-        const response = await axios.delete(UPDATE_URL, {
+        const response = await axios.get(PROJECTS_URL, {
             headers: {"Authorization": `Bearer ${token}`}
         });
-        return response.data.object
-    } catch (error) {
 
-        return false
+        return response.data.object.map((project: any) => {
+            return new ProjectDTO(project.project_id, project.project_image_path, project.project_name, project.project_summary, project.description,
+                project.project_aim, project.project_access_type, project.profession_level, project.degree, project.project_level,
+                project.start_date, project.expected_completion_date, project.application_deadline, project.completion_date, project.project_owner,
+                project.max_participants, project.project_status, project.current_participants)
+        })
+    } catch (error) {
+        console.log(error)
     }
 }
 
-
-export const findProjectsWitKeyword = async (page: number, word: string) => {
+export const updateProject = async (dto: ProjectDTO, photo: File | null) => {
     try {
-        const LOGIN_URL = `${PREFIX}/api/project/admin/find/all/contains/page?p=${page}&word=${word}`
+        const formData = new FormData();
+
+        formData.append('dto', JSON.stringify(dto))
+
+        if (photo) {
+            formData.append('file', photo);
+        }
+
+        const UPDATE_URL = `${PREFIX}/api/project/admin/update`
         const token = getUserInformationFromLocalStorage().accessToken;
-        const response = await axios.get(LOGIN_URL, {headers: {"Authorization": `Bearer ${token}`}});
-        return response.data.object.users
+        const response = await axios.post(UPDATE_URL, formData, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            }
+        });
+
+        console.log("Response: ", response.data)
+        return response.data;
     } catch (error) {
-        console.log(error)
+        console.error(error);
+        throw error;
     }
 }

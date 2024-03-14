@@ -100,12 +100,16 @@ export interface Link {
 }
 
 export class UserProfileUpdateDTO {
+    public user_rate: number
+    public user_feedback_rate: number
     public about_me: string
     public user_id: string
 
-    constructor(about_me: string, user_id: string) {
+    constructor(about_me: string, user_id: string, user_rate: number, user_feedback_rate: number) {
         this.about_me = about_me;
         this.user_id = user_id;
+        this.user_rate = user_rate;
+        this.user_feedback_rate = user_feedback_rate;
     }
 
 }

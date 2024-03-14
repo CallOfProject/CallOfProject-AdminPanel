@@ -5,74 +5,79 @@ import {Column} from "primereact/column";
 import './Projects.css'
 import SidebarComponent from "../sidebar/SidebarComponent";
 import ProjectUpdateComponent from "../project-update/ProjectUpdateComponent";
-
-interface Customer {
-    projectName: string;
-    owner: string;
-    projectStatus: string;
-    startDate: string;
-    participantStatus: string;
-    edit: JSX.Element;
-}
+import {ProjectDTO} from "../../dto/ProjectDTO";
+import {findAllProjectsByPage} from "../../services/ProjectService";
+import {Tag} from "primereact/tag";
 
 const ProjectsTableComponent = () => {
-
-    /*<Button type="button" severity="danger" icon="pi pi-trash" rounded outlined/>*/
-    const [customers, setCustomers] = useState<Customer[]>([]);
+    const [projects, setProjects] = useState<ProjectDTO[]>([]);
     const [isOpen, setIsOpen] = useState<boolean>(false);
-    const handleEditProjectBtn = () => {
+    const [selectedProject, setSelectedProject] = useState<ProjectDTO | null>(null);
+
+
+    const handleEditProjectBtn = (project: ProjectDTO) => {
+        setSelectedProject(project)
         setIsOpen(!isOpen)
     };
+
+    const fetchData = async () => {
+        const projects: ProjectDTO[] = await findAllProjectsByPage(1)
+        console.log(projects)
+        setProjects(projects)
+
+    }
+
     useEffect(() => {
-        const customersToAdd: Customer[] = [];
-        for (let i = 0; i < 60; i++) {
-            const customer: Customer = {
-                projectName: 'ORM Framework',
-                owner: 'nuricanozturk',
-                projectStatus: 'IN_PROGRESS',
-                startDate: '2024-03-11',
-                participantStatus: "3/10",
-                edit: <Button type="button" onClick={() => handleEditProjectBtn()} icon="pi pi-pencil" rounded
-                              outlined/>
-            };
-            customersToAdd.push(customer);
-        }
-        setCustomers(customersToAdd);
+        fetchData()
     }, []);
 
+    const projectEditBody = (project: ProjectDTO) => {
+        return <Button type="button" onClick={() => handleEditProjectBtn(project)} icon="pi pi-pencil" rounded
+                       outlined/>
+    }
+    const projectStatusElement = (project: ProjectDTO) => {
+        return <Tag value={project.project_status} severity="info" style={{fontSize: '10pt'}}/>
+    };
+
+
+    const maxParticipantsElement = (project: ProjectDTO) => {
+        return <Tag value={project.current_participants + "/" + project.max_participants} severity="info"
+                    style={{fontSize: '10pt'}}/>
+    };
     return (
         <div className="card">
-            {isOpen && <ProjectUpdateComponent openProjectEditDialog={isOpen} setOpenProjectEditDialog={setIsOpen}/>}
+            {isOpen && <ProjectUpdateComponent project={selectedProject} openProjectEditDialog={isOpen}
+                                               setOpenProjectEditDialog={setIsOpen}/>}
             <div className="my-navbar">
                 <SidebarComponent/>
             </div>
             <div className="projects-container">
                 <h2 style={{textAlign: 'center'}}>PROJECT CONTROL PAGE</h2>
                 <hr style={{color: '#BBE1FA'}}/>
-                <DataTable value={customers} paginator rows={7}
+                <DataTable value={projects} paginator rows={7}
                            selectionMode="single"
                            reorderableRows={true}
                            resizableColumns={true}
                            reorderableColumns={true}
-                           onRowReorder={(e) => setCustomers(e.value)} tableStyle={{minWidth: '50rem'}}
+                           onRowReorder={(e) => setProjects(e.value)} tableStyle={{minWidth: '50rem'}}
                            paginatorTemplate="RowsPerPageDropdown FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
                            currentPageReportTemplate="{first} to {last} of {totalRecords}">
                     <Column rowReorder style={{width: '3rem'}}/>
-                    <Column field="projectName" header="Title" alignHeader={"center"}
-                            style={{textAlign: 'center'}}></Column>
-                    <Column field="owner" header="Owner" alignHeader={"center"}
-                            style={{textAlign: 'center'}}></Column>
-                    <Column field="projectStatus" header="Status" alignHeader={"center"}
-                            style={{textAlign: 'center'}}></Column>
-                    <Column field="startDate" header="Start Date" alignHeader={"center"}
-                            style={{textAlign: 'center'}}></Column>
-                    <Column field="participantStatus" header="Participant" alignHeader={"center"}
-                            style={{textAlign: 'center'}}></Column>
-                    <Column field="edit" header="Edit" alignHeader={"center"}
-                            style={{textAlign: 'center'}}></Column>
+                    <Column field="project_name" header="Title" alignHeader={"center"}
+                            style={{textAlign: 'center', fontWeight: "bold"}}></Column>
+                    <Column field="project_owner" header="Owner" alignHeader={"center"}
+                            style={{textAlign: 'center', fontWeight: "bold"}}></Column>
+                    <Column field="project_status" header="Status" alignHeader={"center"} body={projectStatusElement}
+                            style={{textAlign: 'center', fontWeight: "bold"}}></Column>
+                    <Column field="start_date" header="Start Date" alignHeader={"center"}
+                            style={{textAlign: 'center', fontWeight: "bold"}}></Column>
+                    <Column field="max_participants" header="Participant" alignHeader={"center"}
+                            body={maxParticipantsElement}
+                            style={{textAlign: 'center', fontWeight: "bold"}}></Column>
+                    <Column field="edit" header="Edit" alignHeader={"center"} body={projectEditBody}
+                            style={{textAlign: 'center', fontWeight: "bold"}}></Column>
                 </DataTable>
             </div>
-
         </div>
     );
 }
