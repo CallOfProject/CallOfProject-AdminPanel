@@ -2,9 +2,9 @@ import {PREFIX} from "../util/ConnectionUtil";
 import axios from "axios";
 import {TicketAnswerDTO, TicketDTO} from "../dto/Models";
 
-export const findAllOpenTicketsByPage = async (page: number) => {
+export const findAllOpenTickets = async () => {
     try {
-        const LOGIN_URL = `${PREFIX}/api/ticket/find/all?page=${page}`
+        const LOGIN_URL = `${PREFIX}/api/ticket/find/all`
         //const token = getUserInformationFromLocalStorage().accessToken;
         const response = await axios.get(LOGIN_URL);
         return response.data.object.map((ticket: any) => {
@@ -32,6 +32,17 @@ export const giveFeedbackForTicket = async (answerDTO: TicketAnswerDTO) => {
 export const findOpenTicketCount = async () => {
     try {
         const LOGIN_URL = `${PREFIX}/api/ticket/find/open-count`
+        //const token = getUserInformationFromLocalStorage().accessToken;
+        const response = await axios.get(LOGIN_URL);
+        return response.data.object
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const findClosedTicketCount = async () => {
+    try {
+        const LOGIN_URL = `${PREFIX}/api/ticket/find/close-count`
         //const token = getUserInformationFromLocalStorage().accessToken;
         const response = await axios.get(LOGIN_URL);
         return response.data.object

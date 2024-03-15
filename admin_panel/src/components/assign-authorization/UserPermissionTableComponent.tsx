@@ -69,7 +69,7 @@ const UserPermissionTableComponent = () => {
         }
     };
     const fetchData = async () => {
-        const newUsers = await findUsers(1);
+        const newUsers = await findUsers();
         setUsers(newUsers)
         setCurrentUserRole(getRole())
     };

@@ -21,7 +21,7 @@ const ProjectsTableComponent = () => {
     };
 
     const fetchData = async () => {
-        const projects: ProjectDTO[] = await findAllProjectsByPage(1)
+        const projects: ProjectDTO[] = await findAllProjectsByPage()
         console.log(projects)
         setProjects(projects)
 

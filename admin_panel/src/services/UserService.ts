@@ -4,9 +4,9 @@ import {PREFIX} from "../util/ConnectionUtil";
 import {UserUpdateDTO} from "../dto/UserUpdateDTO";
 import {Role, User, UserProfile, UserProfileUpdateDTO} from "../dto/Models";
 
-export const findUsers = async (page: number) => {
+export const findUsers = async () => {
     try {
-        const LOGIN_URL = `${PREFIX}/api/auth/admin/find/all/page?p=${page}`
+        const LOGIN_URL = `${PREFIX}/api/auth/admin/find/all`
         const token = getUserInformationFromLocalStorage().accessToken;
         const response = await axios.get(LOGIN_URL, {headers: {"Authorization": `Bearer ${token}`}});
         return response.data.object.users.map((usr: any) => {
@@ -23,13 +23,10 @@ export const findUsers = async (page: number) => {
 }
 export const findUserProfile = async (userId: string) => {
     try {
-        //http://localhost:3131/api/auth/users/find/user/profile/username?uname=cop_root
         const LOGIN_URL = `${PREFIX}/api/auth/users/find/user/profile/id?uid=${userId}`
         const token = getUserInformationFromLocalStorage().accessToken;
         const response = await axios.get(LOGIN_URL, {headers: {"Authorization": `Bearer ${token}`}});
         const object = response.data.object
-
-        console.log("Object: ", object)
         return new UserProfile(object.cv, object.profile_photo, object.about_me, object.user_rate, object.user_feedback_rate)
     } catch (error) {
         console.log(error)

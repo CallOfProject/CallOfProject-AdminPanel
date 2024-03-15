@@ -35,7 +35,7 @@ const UsersTableComponent = () => {
     };
 
     const fetchData = async () => {
-        setUsers(await findUsers(currentPage))
+        setUsers(await findUsers())
     };
     useEffect(() => {
         fetchData()

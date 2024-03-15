@@ -6,7 +6,7 @@ import {Column} from "primereact/column";
 import './Ticket.css';
 import SidebarComponent from "../sidebar/SidebarComponent";
 import GiveFeedbackComponent from "../feedback-page/GiveFeedbackComponent";
-import {findAllOpenTicketsByPage} from "../../services/TicketService";
+import {findAllOpenTickets} from "../../services/TicketService";
 import {TicketDTO} from "../../dto/Models";
 import {Tag} from "primereact/tag";
 
@@ -21,7 +21,7 @@ const TicketsTableComponent = () => {
         setOpenGiveFeedbackDialog(!openGiveFeedbackDialog)
     };
     const fetchData = async () => {
-        setTickets(await findAllOpenTicketsByPage(1))
+        setTickets(await findAllOpenTickets())
     };
 
 

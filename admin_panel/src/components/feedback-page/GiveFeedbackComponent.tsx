@@ -11,7 +11,7 @@ import {Editor, EditorTextChangeEvent} from "primereact/editor";
 import {TicketAnswerDTO, TicketDTO} from "../../dto/Models";
 import {getUserID, getUsername} from "../../dto/UserDTO";
 import {giveFeedbackForTicket} from "../../services/TicketService";
-import {showErrorMessage, showSuccessMessage, showWarningMessage} from "../../util/Notification";
+import {showSuccessMessage, showWarningMessage} from "../../util/Notification";
 
 interface GiveFeedbackComponentProps {
     openGiveFeedbackDialog: boolean;
@@ -55,7 +55,6 @@ const GiveFeedbackComponent: FC<GiveFeedbackComponentProps> = ({
         } else {
             setIsLoading(true);
             const result = await giveFeedbackForTicket(new TicketAnswerDTO(ticket!.id, getUserID(), feedback, getUsername()));
-            console.log("RRR: ",result)
             ticket!.answered_date = result!.answered_date;
             setIsLoading(false);
             showSuccessMessage(toast, "Success", "Feedback is given successfully")

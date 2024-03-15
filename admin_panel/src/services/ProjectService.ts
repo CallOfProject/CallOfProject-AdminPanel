@@ -4,24 +4,20 @@ import {PREFIX} from "../util/ConnectionUtil";
 import {ProjectDTO} from "../dto/ProjectDTO";
 
 
-/*
-export const findProjects = async (page: number) => {
+export const findAllProjectCount = async () => {
     try {
-        const LOGIN_URL = `${PREFIX}/api/project/admin/all?p=${page}`
+        const ALL_USER_COUNT_URL = `${PREFIX}/api/project/admin/total-project-count`
         const token = getUserInformationFromLocalStorage().accessToken;
-        const response = await axios.get(LOGIN_URL, {
-            headers: {"Authorization": `Bearer ${token}`}
-        });
-        return response.data
+        const response = await axios.get(ALL_USER_COUNT_URL, {headers: {"Authorization": `Bearer ${token}`}});
+        return response.data.object
     } catch (error) {
         console.log(error)
     }
 }
-*/
 
-export const findAllProjectsByPage = async (page: number) => {
+export const findAllProjectsByPage = async () => {
     try {
-        const PROJECTS_URL = `${PREFIX}/api/project/admin/find/all/page?p=${page}`
+        const PROJECTS_URL = `${PREFIX}/api/project/admin/find/all`
         const token = getUserInformationFromLocalStorage().accessToken;
         const response = await axios.get(PROJECTS_URL, {
             headers: {"Authorization": `Bearer ${token}`}

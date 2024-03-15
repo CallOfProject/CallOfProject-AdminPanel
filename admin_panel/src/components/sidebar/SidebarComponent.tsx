@@ -5,7 +5,7 @@ import {useEffect, useState} from "react";
 import cop_logo from '../../assets/new_logo.png'
 import './Sidebar.css'
 import {getRole, getUsername} from "../../dto/UserDTO";
-import {findAllOpenTicketsByPage, findOpenTicketCount} from "../../services/TicketService";
+import {findAllOpenTickets, findOpenTicketCount} from "../../services/TicketService";
 
 const SidebarComponent = () => {
     const [visible, setVisible] = useState<boolean>(false);
