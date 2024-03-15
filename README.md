@@ -1,4 +1,30 @@
 # CallOfProject-AdminPanel
+
+This application, Call-Of-Project, defines three fundamental roles, listed from most authorized to least authorized: Root, Admin, and User.
+
+**I will upload the backend repository as soon as possible**
+
+## Root Role:
+- Can perform all actions of the Admin role.
+- Has the authority to assign admin privileges to other users.
+
+## Admin Role:
+- Responsible for ensuring the functionality and ethical use of the application.
+- Can make moderate changes to users and projects.
+- Primary responsibilities include promptly responding to opened tickets and reporting bugs to the developers.
+
+## User Role:
+- The least authorized role in the application.
+- Can utilize the functionalities provided by the application.
+
+**Note:** Root and Admin roles have specific responsibilities and access levels designed to maintain the integrity and functionality of the application. Users are advised to adhere to their assigned roles for the efficient operation of the Call-Of-Project application.
+
+## What did we us?:
+  - **React (Typescript)**
+  - **Primereact library**
+  - **primeFlexCSS**
+  - **Backend used microservice architecture. I connected with API gateway endpoint**
+
 ### Login Page
 - ![Ekran Resmi 2024-03-13 15 21 44](https://github.com/CallOfProject/CallOfProject-AdminPanel/assets/147416047/980e64ba-c426-4514-bf1f-d136ea6cd061)
 ### Main Page
