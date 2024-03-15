@@ -48,3 +48,8 @@ This application, Call-Of-Project, defines three fundamental roles, listed from 
 - ![Ekran Resmi 2024-03-13 15 24 36](https://github.com/CallOfProject/CallOfProject-AdminPanel/assets/147416047/e5e3a1b5-3dfc-4bdc-aa1f-17593a09411e)
 ### Settings Page
 - ![Ekran Resmi 2024-03-13 15 24 45](https://github.com/CallOfProject/CallOfProject-AdminPanel/assets/147416047/4941ae39-caac-4016-a35f-9638f618e8d9)
+
+## Sample Video:
+  - https://github.com/CallOfProject/CallOfProject-AdminPanel/assets/147416047/8983d331-0c5f-4916-8cf8-147615ec2aff
+
+
