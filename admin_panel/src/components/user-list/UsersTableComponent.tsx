@@ -84,7 +84,6 @@ const UsersTableComponent = () => {
             },
             reject
         });
-
     };
     const removeTemplate = () => {
         return <Button type="button" severity="danger" icon="pi pi-trash" onClick={handleRemoveButton} rounded

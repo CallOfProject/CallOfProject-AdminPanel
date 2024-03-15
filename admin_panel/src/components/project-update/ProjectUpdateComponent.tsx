@@ -142,6 +142,9 @@ const ProjectUpdateComponent: FC<EditProjectComponentProps> = ({
         const result = await updateProject(project!, image);
         setStartDate(toDateObject(project!.start_date));
         project!.start_date = getFormattedDate(startDate!);
+        console.log("Project: ", result);
+        project!.project_image_path = result.object
+        setProjectImage(project!.project_image_path!);
         setIsLoading(false);
         if (result.status_code === 2000) {
             toast.current?.show({severity: 'success', summary: 'Success', detail: 'Project updated successfully'});

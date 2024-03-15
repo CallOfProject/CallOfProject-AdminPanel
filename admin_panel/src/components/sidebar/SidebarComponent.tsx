@@ -1,13 +1,22 @@
 import {Ripple} from "primereact/ripple";
 import {Button} from "primereact/button";
 import {Sidebar} from "primereact/sidebar";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import cop_logo from '../../assets/new_logo.png'
 import './Sidebar.css'
 import {getRole, getUsername} from "../../dto/UserDTO";
+import {findAllOpenTicketsByPage, findOpenTicketCount} from "../../services/TicketService";
 
 const SidebarComponent = () => {
     const [visible, setVisible] = useState<boolean>(false);
+    const [openTicketCount, setOpenTicketCount] = useState<number>(0);
+    const fetchData = async () => {
+        setOpenTicketCount(await findOpenTicketCount())
+    };
+    useEffect(() => {
+        fetchData()
+    }, []);
+
 
     return (
         <div className="card flex">
@@ -64,8 +73,8 @@ const SidebarComponent = () => {
                                             <span className="font-medium">Tickets</span>
                                             <span
                                                 className="inline-flex align-items-center justify-content-center ml-auto bg-blue-500 text-0 border-circle"
-                                                style={{minWidth: '1.5rem', height: '1.5rem'}}>
-                                                            3
+                                                style={{minWidth: '1.5rem', height: '1.5rem', fontWeight: "600"}}>
+                                                            {openTicketCount}
                                                         </span>
                                             <Ripple/>
                                         </a>

@@ -111,5 +111,51 @@ export class UserProfileUpdateDTO {
         this.user_rate = user_rate;
         this.user_feedback_rate = user_feedback_rate;
     }
+}
 
+export class TicketDTO {
+    public id: string
+    public user_id: string
+    public admin_id: string
+    public admin_username: string
+    public username: string
+    public user_email: string
+    public title: string
+    public feedback_deadline: string
+    public answered_date: string
+    public created_date: string
+    public status: string
+    public description: string
+
+    constructor(id: string, user_id: string, admin_id: string, admin_username: string, username: string, user_email: string, title: string, feedback_deadline: string, answered_date: string, created_date: string, status: string,
+                description: string) {
+
+        this.description = description;
+        this.id = id;
+        this.user_id = user_id;
+        this.admin_id = admin_id;
+        this.admin_username = admin_username;
+        this.username = username;
+        this.user_email = user_email;
+        this.title = title;
+        this.feedback_deadline = feedback_deadline;
+        this.answered_date = answered_date;
+        this.created_date = created_date;
+        this.status = status;
+    }
+}
+
+
+export class TicketAnswerDTO {
+    public id: string
+    public admin_id: string
+    public answer: string
+    public admin_username: string
+
+    constructor(id: string, admin_id: string, answer: string, admin_username: string) {
+        this.id = id;
+        this.admin_id = admin_id;
+        this.answer = answer;
+        this.admin_username = admin_username;
+    }
 }

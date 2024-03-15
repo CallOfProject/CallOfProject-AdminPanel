@@ -6,48 +6,47 @@ import {Column} from "primereact/column";
 import './Ticket.css';
 import SidebarComponent from "../sidebar/SidebarComponent";
 import GiveFeedbackComponent from "../feedback-page/GiveFeedbackComponent";
+import {findAllOpenTicketsByPage} from "../../services/TicketService";
+import {TicketDTO} from "../../dto/Models";
+import {Tag} from "primereact/tag";
 
-interface Customer {
-    title: string;
-    createdDate: string;
-    answeredDate: string;
-    feedbackDeadline: string;
-    open: JSX.Element;
-    giveFeedback: JSX.Element;
-    username: string;
-    closeTicket: JSX.Element;
-}
 
 const TicketsTableComponent = () => {
-    const [customers, setCustomers] = useState<Customer[]>([]);
+    const [tickets, setTickets] = useState<TicketDTO[]>([]);
     const [openGiveFeedbackDialog, setOpenGiveFeedbackDialog] = useState<boolean>(false);
+    const [selectedTicket, setSelectedTicket] = useState<TicketDTO | null>(null)
 
-
-    const handleGiveFeedbackBtn = () => {
+    const handleGiveFeedbackBtn = (ticket: TicketDTO) => {
+        setSelectedTicket(ticket)
         setOpenGiveFeedbackDialog(!openGiveFeedbackDialog)
     };
+    const fetchData = async () => {
+        setTickets(await findAllOpenTicketsByPage(1))
+    };
+
+
     useEffect(() => {
-        const customersToAdd: Customer[] = [];
-        for (let i = 0; i < 20; i++) {
-            const customer: Customer = {
-                title: 'Ticket Title',
-                createdDate: '2024-03-11',
-                answeredDate: '2024-03-11',
-                feedbackDeadline: '2024-03-11',
-                open: <RadioButton checked={false}/>,
-                giveFeedback: <Button className="p-button-sm" onClick={() => handleGiveFeedbackBtn()}
-                                      label="Give Feedback" severity="success" outlined/>,
-                username: 'janesmith',
-                closeTicket: <Button className="p-button-sm" label="Close Ticket" severity="danger" outlined/>
-            };
-            customersToAdd.push(customer);
-        }
-        setCustomers(customersToAdd);
+        fetchData()
+
     }, []);
 
+    const showGiveFeedbackElement = (ticket: TicketDTO) => {
+        return <Button type="button" icon="pi pi-pencil" label={"Give Feedback"}
+                       onClick={() => handleGiveFeedbackBtn(ticket)}/>
+
+    };
+    const showStatusElement = (ticket: TicketDTO) => {
+        return <Tag value={ticket.status}
+                    severity={ticket.status === 'OPEN' ? 'info' : ticket.status === 'CLOSED' ? 'warning' : 'danger'}/>
+    };
+
+
+    const showAnsweredDate = (ticket: TicketDTO) => {
+        return <Tag value={ticket.answered_date ? ticket.answered_date : 'Not Answered Yet'}/>
+    };
     return (
         <div className="card">
-            {openGiveFeedbackDialog && <GiveFeedbackComponent openGiveFeedbackDialog={openGiveFeedbackDialog}
+            {openGiveFeedbackDialog && <GiveFeedbackComponent ticket={selectedTicket} openGiveFeedbackDialog={openGiveFeedbackDialog}
                                                               setOpenGiveFeedbackDialog={setOpenGiveFeedbackDialog}/>}
             <div className="my-navbar">
                 <SidebarComponent/>
@@ -55,12 +54,12 @@ const TicketsTableComponent = () => {
             <div className="ticket-container card">
                 <h2 style={{textAlign: 'center'}}>TICKET CONTROL PAGE</h2>
                 <hr style={{color: '#BBE1FA'}}/>
-                <DataTable value={customers} paginator rows={7}
+                <DataTable value={tickets} paginator rows={7}
                            selectionMode="single"
                            reorderableRows={true}
                            resizableColumns={true}
                            reorderableColumns={true}
-                           onRowReorder={(e) => setCustomers(e.value)} tableStyle={{minWidth: '50rem'}}
+                           onRowReorder={(e) => setTickets(e.value)} tableStyle={{minWidth: '50rem'}}
                            paginatorTemplate="RowsPerPageDropdown FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
                            currentPageReportTemplate="{first} to {last} of {totalRecords}">
 
@@ -68,16 +67,16 @@ const TicketsTableComponent = () => {
                     <Column field="title" header="Title" alignHeader={"center"} style={{textAlign: 'center'}}></Column>
                     <Column field="username" header="Username" alignHeader={"center"}
                             style={{textAlign: 'center'}}></Column>
-                    <Column field="createdDate" header="Created Date" alignHeader={"center"}
+                    <Column field="created_date" header="Created Date" alignHeader={"center"}
                             style={{textAlign: 'center'}}></Column>
-                    <Column field="answeredDate" header="Answered Date" alignHeader={"center"}
+                    <Column field="answered_date" header="Answered Date" alignHeader={"center"}
+                            style={{textAlign: 'center'}} body={showAnsweredDate}></Column>
+                    <Column field="feedback_deadline" header="Feedback Deadline Date" alignHeader={"center"}
                             style={{textAlign: 'center'}}></Column>
-                    <Column field="feedbackDeadline" header="Feedback Deadline Date" alignHeader={"center"}
-                            style={{textAlign: 'center'}}></Column>
-                    <Column field="open" header="Open/Close" alignHeader={"center"}
-                            style={{textAlign: 'center'}}></Column>
-                    <Column field="giveFeedback" alignHeader={"center"} style={{textAlign: 'center'}}></Column>
-                    <Column field="closeTicket" alignHeader={"center"} style={{textAlign: 'center'}}></Column>
+                    <Column field="status" header="Status" alignHeader={"center"}
+                            style={{textAlign: 'center'}} body={showStatusElement}></Column>
+                    <Column field="giveFeedback" alignHeader={"center"} style={{textAlign: 'center'}}
+                            body={showGiveFeedbackElement}></Column>
                 </DataTable>
             </div>
         </div>
