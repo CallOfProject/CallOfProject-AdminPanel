@@ -3,6 +3,7 @@ import {CURRENT_USER} from "../util/Constants";
 
 export const getUserInformationFromLocalStorage = () => JSON.parse(localStorage.getItem(CURRENT_USER))
 export const getRole = () => JSON.parse(localStorage.getItem(CURRENT_USER)).role
+export const getUsername = () => JSON.parse(localStorage.getItem(CURRENT_USER)).username
 export const getUserID = () => JSON.parse(localStorage.getItem(CURRENT_USER)).userId
 
 export class UserDTO {

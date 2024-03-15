@@ -1,6 +1,6 @@
 import {InputText} from "primereact/inputtext";
 import {Button} from "primereact/button";
-import React, {useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import './Login.css'
 import cop_logo from '../../assets/new_logo.png'
 import {Navigate} from "react-router-dom";
@@ -16,6 +16,9 @@ const LoginComponent = () => {
     const [password, setPassword] = useState('');
     const [success, setSuccess] = useState(false);
 
+    useEffect(() => {
+        localStorage.clear()
+    }, []);
     const handleLoginBtn = async () => {
         const loginDTO = new UserLoginDTO(username, password);
         const loginResponse = await LoginService(loginDTO);
@@ -37,9 +40,9 @@ const LoginComponent = () => {
                 showErrorMessage(toast, "Error", "Invalid username or password!")
             }
         }
-
-
     };
+
+
     return (
         <>
             <Toast ref={toast}/>

@@ -1,18 +1,14 @@
 import {Ripple} from "primereact/ripple";
 import {Button} from "primereact/button";
 import {Sidebar} from "primereact/sidebar";
-import {useRef, useState} from "react";
+import {useState} from "react";
 import cop_logo from '../../assets/new_logo.png'
 import './Sidebar.css'
+import {getRole, getUsername} from "../../dto/UserDTO";
 
 const SidebarComponent = () => {
     const [visible, setVisible] = useState<boolean>(false);
-    const btnRef3 = useRef<string>("/users");
 
-    const handleLogoutBtn = () => {
-        localStorage.clear()
-        sessionStorage.clear()
-    };
     return (
         <div className="card flex">
             <Sidebar
@@ -43,14 +39,16 @@ const SidebarComponent = () => {
                                             <Ripple/>
                                         </a>
                                     </li>
-                                    <li>
-                                        <a href={"/user-permissions"}
-                                           className="remove-underline p-ripple flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors w-full">
-                                            <i className="pi pi-key mr-2"></i>
-                                            <span className="font-medium">Authorize Manager</span>
-                                            <Ripple/>
-                                        </a>
-                                    </li>
+                                    {getRole() === "ROLE_ROOT" &&
+                                        <li>
+                                            <a href={"/user-permissions"}
+                                               className="remove-underline p-ripple flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors w-full">
+                                                <i className="pi pi-key mr-2"></i>
+                                                <span className="font-medium">Authorize Manager</span>
+                                                <Ripple/>
+                                            </a>
+                                        </li>
+                                    }
                                     <li>
                                         <a href={"/projects"}
                                            className="remove-underline p-ripple flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors w-full">
@@ -83,8 +81,8 @@ const SidebarComponent = () => {
                                     </li>
 
                                     <li>
-                                        <a onClick={() => handleLogoutBtn()}
-                                           className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors w-full remove-underline">
+                                        <a href={"/"}
+                                           className="remove-underline p-ripple flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors w-full remove-underline">
                                             <i className="pi pi-sign-out mr-2"></i>
                                             <span className="font-medium">Logout</span>
                                             <Ripple/>
@@ -98,7 +96,7 @@ const SidebarComponent = () => {
                                 <a v-ripple
                                    className="m-3 flex align-items-center cursor-pointer p-3 gap-2 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple">
                                     <i className="pi pi-user mr-2"></i>
-                                    <span className="font-bold">Nuri Can ÖZTÜRK</span>
+                                    <span className="font-bold">{getUsername() != null ? getUsername() : ""}</span>
                                 </a>
                             </div>
                         </div>

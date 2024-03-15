@@ -1,6 +1,4 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {DataTable} from 'primereact/datatable';
-import {Column} from 'primereact/column';
 import {Button} from "primereact/button";
 import './UsersPermissionTable.css';
 import SidebarComponent from "../sidebar/SidebarComponent";
@@ -11,21 +9,15 @@ import {getRole} from "../../dto/UserDTO";
 import {Toast} from "primereact/toast";
 import {giveAdminRole, removeAdminRole} from "../../services/RoleManagementService";
 import {showErrorMessage, showInfoMessage, showSuccessMessage, showWarningMessage} from "../../util/Notification";
+import {DataTable} from "primereact/datatable";
+import {Column} from "primereact/column";
 
 const UserPermissionTableComponent = () => {
     const [users, setUsers] = useState<User[]>([]);
     const [page, setPage] = useState(1);
     const toast = useRef<Toast>(null);
+    const [currentUserRole, setCurrentUserRole] = useState<string>("");
 
-    const getRoleSeverity = (role: string) => {
-        if (role === "ROLE_ROOT") {
-            return 'error'
-        }
-        if (role === "ROLE_ADMIN") {
-            return 'warning'
-        }
-        return 'info'
-    }
     const handleGiveAdminRoleButton = async (user: User) => {
         try {
             const role = getRole()
@@ -79,6 +71,7 @@ const UserPermissionTableComponent = () => {
     const fetchData = async () => {
         const newUsers = await findUsers(1);
         setUsers(newUsers)
+        setCurrentUserRole(getRole())
     };
 
     useEffect(() => {
@@ -87,7 +80,9 @@ const UserPermissionTableComponent = () => {
 
     const showRolesElements = (role: User) => {
         return role.roles.map((role, index) => {
-            return <Tag key={index} className="my-tag" severity={role.name === "ROLE_ROOT" ? 'danger' : role.name === "ROLE_ADMIN" ? 'warning' : 'info'} value={role.name}></Tag>
+            return <Tag key={index} className="my-tag"
+                        severity={role.name === "ROLE_ROOT" ? 'danger' : role.name === "ROLE_ADMIN" ? 'warning' : 'info'}
+                        value={role.name}></Tag>
         })
     };
     const showGiveAdminRoleElement = (user: User) => {
@@ -113,30 +108,29 @@ const UserPermissionTableComponent = () => {
                 <SidebarComponent/>
             </div>
 
-            <div className="users-container card">
-                <h2 style={{textAlign: 'center'}}>AUTHORIZATION CONTROL PAGE</h2>
-                <hr style={{color: '#BBE1FA'}}/>
-                <DataTable className="centered-header" value={users} paginator rows={7}
-                           selectionMode="single"
-                           reorderableRows={true}
-                           resizableColumns={true}
-                           reorderableColumns={true}
-                           onRowReorder={(e) => setUsers(e.value)}
-                           paginatorTemplate="RowsPerPageDropdown FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
-                           currentPageReportTemplate="{first} to {last} of {totalRecords}">
-                    <Column rowReorder/>
-                    <Column field="username" header="Username" alignHeader={"center"}
-                            style={{textAlign: 'center'}}></Column>
-                    <Column alignHeader={"center"} field="roles" header="Roles" style={{textAlign: 'center'}}
-                            body={showRolesElements}></Column>
-                    <Column field="giveAdminRole" header="Give Admin Role" body={showGiveAdminRoleElement}></Column>
-                    <Column field="removeAdminRole" header="Remove Admin Role"
-                            body={showRemoveAdminRoleElement}></Column>
-                </DataTable>
-            </div>
-        </div>
-
-    );
+                {currentUserRole !== "ROLE_ROOT" ? <div className="permission-denied card"><p>Permission Denied!</p></div> :
+                <div className="users-container card">
+                    <h2 style={{textAlign: 'center'}}>AUTHORIZATION CONTROL PAGE</h2>
+                    <hr style={{color: '#BBE1FA'}}/>
+                    <DataTable className="centered-header" value={users} paginator rows={7}
+                               selectionMode="single"
+                               reorderableRows={true}
+                               resizableColumns={true}
+                               reorderableColumns={true}
+                               onRowReorder={(e) => setUsers(e.value)}
+                               paginatorTemplate="RowsPerPageDropdown FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
+                               currentPageReportTemplate="{first} to {last} of {totalRecords}">
+                        <Column rowReorder/>
+                        <Column field="username" header="Username" alignHeader={"center"}
+                                style={{textAlign: 'center'}}></Column>
+                        <Column alignHeader={"center"} field="roles" header="Roles" style={{textAlign: 'center'}}
+                                body={showRolesElements}></Column>
+                        <Column field="giveAdminRole" header="Give Admin Role" body={showGiveAdminRoleElement}></Column>
+                        <Column field="removeAdminRole" header="Remove Admin Role"
+                                body={showRemoveAdminRoleElement}></Column>
+                    </DataTable>
+                </div>}
+        </div>);
 }
 
 export default UserPermissionTableComponent;

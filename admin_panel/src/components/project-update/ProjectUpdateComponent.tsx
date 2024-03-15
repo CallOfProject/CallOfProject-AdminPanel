@@ -11,6 +11,7 @@ import {Calendar} from "primereact/calendar";
 import {Dropdown, DropdownChangeEvent} from "primereact/dropdown";
 import {ProjectDTO} from "../../dto/ProjectDTO";
 import {updateProject} from "../../services/ProjectService";
+import {toDateObject} from "../../util/Constants";
 
 interface EditProjectComponentProps {
     openProjectEditDialog: boolean;
@@ -139,6 +140,8 @@ const ProjectUpdateComponent: FC<EditProjectComponentProps> = ({
         project!.project_image_path = projectImage;
 
         const result = await updateProject(project!, image);
+        setStartDate(toDateObject(project!.start_date));
+        project!.start_date = getFormattedDate(startDate!);
         setIsLoading(false);
         if (result.status_code === 2000) {
             toast.current?.show({severity: 'success', summary: 'Success', detail: 'Project updated successfully'});
