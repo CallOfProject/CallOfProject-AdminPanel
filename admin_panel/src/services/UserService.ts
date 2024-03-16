@@ -87,6 +87,7 @@ export const removeUser = async (username: string) => {
         const response = await axios.delete(UPDATE_URL, {
             headers: {"Authorization": `Bearer ${token}`}
         });
+        console.log("Response: ", response.data)
         return response.data.object
     } catch (error) {
 

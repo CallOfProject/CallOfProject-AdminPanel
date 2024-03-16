@@ -79,7 +79,7 @@ const UsersTableComponent = () => {
             message: 'Are you sure you want to remove user?',
             icon: 'pi pi-exclamation-triangle',
             defaultFocus: 'accept',
-            accept() {
+            accept: () => {
                 confirmRemoveUser()
             },
             reject
@@ -89,6 +89,8 @@ const UsersTableComponent = () => {
         return <Button type="button" severity="danger" icon="pi pi-trash" onClick={handleRemoveButton} rounded
                        outlined/>
     };
+
+
     return (
         <div className="users-container card">
             <ConfirmPopup/>
