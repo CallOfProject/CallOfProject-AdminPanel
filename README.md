@@ -52,3 +52,4 @@ https://github.com/CallOfProject/CallOfProject-AdminPanel/assets/147416047/f1833
 ### Settings Page
 - ![Ekran Resmi 2024-03-13 15 24 45](https://github.com/CallOfProject/CallOfProject-AdminPanel/assets/147416047/4941ae39-caac-4016-a35f-9638f618e8d9)
 
+- **Author:** Nuri Can ÖZTÜRK
