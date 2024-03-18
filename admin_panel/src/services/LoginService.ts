@@ -8,7 +8,6 @@ export const LoginService = async (userInput: UserLoginDTO): Promise<UserLoginRe
     try {
         const response = await axios.post(LOGIN_URL, userInput);
         const responseData = response.data
-        console.log(responseData)
         return new UserLoginResponseDTO(userInput.username, responseData.access_token, responseData.refresh_token, responseData.success, responseData.role, responseData.blocked, responseData.user_id)
     } catch (error) {
         console.log(error)

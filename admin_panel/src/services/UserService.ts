@@ -42,8 +42,8 @@ export const updateUser = async (userUpdateDTO: UserUpdateDTO) => {
         console.log(`Bearer ${token}`)
 
         const response = await axios.put(UPDATE_URL, userUpdateDTO, {headers: {"Authorization": `Bearer ${token}`}});
-        console.log("H: ", response.data.object)
-        return response.data.object
+        console.log("H: ", response)
+        return response
     } catch (error) {
         console.log("D: ", error)
     }

@@ -1,7 +1,7 @@
 import {Avatar} from "primereact/avatar";
 import {Button} from "primereact/button";
 import {Dialog} from "primereact/dialog";
-import {FC, useEffect, useState} from "react";
+import {FC, useEffect, useRef, useState} from "react";
 import {InputText} from "primereact/inputtext";
 import {Calendar} from "primereact/calendar";
 import {Nullable} from "primereact/ts-helpers";
@@ -12,6 +12,8 @@ import {User} from "../../dto/Models";
 import {UserUpdateDTO} from "../../dto/UserUpdateDTO";
 import {getUserID} from "../../dto/UserDTO";
 import {updateUser} from "../../services/UserService";
+import {showErrorMessage, showSuccessMessage} from "../../util/Notification";
+import {Toast} from "primereact/toast";
 
 interface EditUserComponentProps {
     openUserEditDialog: boolean;
@@ -20,7 +22,7 @@ interface EditUserComponentProps {
 }
 
 const EditUserComponent: FC<EditUserComponentProps> = ({selectedUser, openUserEditDialog, setOpenUserEditDialog}) => {
-    const [date, setDate] = useState<Nullable<Date>>(null);
+    const toastRef = useRef(null);
     const [firstName, setFirstName] = useState<string>('');
     const [middleName, setMiddleName] = useState<string>('');
     const [lastName, setLastName] = useState<string>('');
@@ -64,8 +66,17 @@ const EditUserComponent: FC<EditUserComponentProps> = ({selectedUser, openUserEd
             const dto = new UserUpdateDTO(id, updatedUser.username, updatedUser.first_name, updatedUser.middle_name,
                 updatedUser.last_name, updatedUser.email, updatedUser.is_account_blocked, formattedDate)
 
-            const k = await updateUser(dto)
-            console.log("K: ", k)
+            const result = await updateUser(dto)
+
+            if (result) {
+                if (result.data.status_code === 200) {
+                    showSuccessMessage(toastRef, "Success", "User updated successfully")
+                } else {
+                    showErrorMessage(toastRef, "Error", "User update failed")
+                }
+            } else {
+                showErrorMessage(toastRef, "Error", "User update failed")
+            }
         }
 
     };
@@ -80,6 +91,7 @@ const EditUserComponent: FC<EditUserComponentProps> = ({selectedUser, openUserEd
 
     return (
         <div className="edit-container card flex justify-content-center">
+            <Toast ref={toastRef}/>
             <Dialog visible={openUserEditDialog} modal header={headerElement} footer={footerContent}
                     onHide={() => setOpenUserEditDialog(false)}>
 
