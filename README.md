@@ -24,7 +24,9 @@ This application, Call-Of-Project, defines three fundamental roles, listed from 
   - **Primereact library**
   - **primeFlexCSS**
   - **Backend used microservice architecture. I connected with API gateway endpoint**
-    
+## Diagram
+![admin_panel](https://github.com/CallOfProject/CallOfProject-AdminPanel/assets/147416047/c6172b12-083e-4b57-8ff6-8ec27ae4962c)
+
 ## Sample Video:
 https://github.com/CallOfProject/CallOfProject-AdminPanel/assets/147416047/f1833550-e1f6-4d9b-946c-ec5d4e1ad460
 
