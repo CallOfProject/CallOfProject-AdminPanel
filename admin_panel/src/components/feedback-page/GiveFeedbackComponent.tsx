@@ -114,7 +114,7 @@ const GiveFeedbackComponent: FC<GiveFeedbackComponentProps> = ({
 
                     <div className="card flex justify-content-center" style={{marginTop: "15px", padding: "10px"}}>
                         <Editor id="feedback" value={feedback}
-                                onTextChange={(e: EditorTextChangeEvent) => setFeedback(e.textValue!)}
+                                onTextChange={(e: EditorTextChangeEvent) => setFeedback(e.htmlValue!)}
                                 style={{height: '320px', width: '100%'}}/>
                     </div>
 
