@@ -2,7 +2,15 @@
 
 This application, Call-Of-Project, defines three fundamental roles, listed from most authorized to least authorized: Root, Admin, and User.
 
-**I will upload the backend repository as soon as possible**
+## Other parts of Call-of-Project
+
+For more information about the project, visit our repositories:
+
+- **Android:** [Call-of-Project-Android](https://github.com/CallOfProject/Call-Of-Project-Android)
+- **Interview:** [Call-of-Project-Interview](https://github.com/CallOfProject/Call-Of-Project-Interview)
+- **Backend:** [Call-of-Project-Backend](https://github.com/CallOfProject/CallOfProject-Backend)
+- **Frontend:** Not completed yet
+- **User Matching and Project Recommendation:** [Call-of-Project-Matching-and-Recommendation](https://github.com/CallOfProject/UserMatching-Suggestion)
 
 ## Root Role:
 - Can perform all actions of the Admin role.
