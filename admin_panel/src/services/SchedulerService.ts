@@ -141,4 +141,51 @@ export const startScheduleCheckProjectStartDate = async () => {
     }
 }
 
+export const startScheduleRecommendProjects = async () => {
+    try {
+        const LOGIN_URL = `${PREFIX}/api/scheduler/recommendation/projects/by-tags`
+        //const token = getUserInformationFromLocalStorage().accessToken;
+        const response = await axios.get(LOGIN_URL);
+        return response.data
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const startScheduleRecommendUserByTags = async () => {
+    try {
+        const LOGIN_URL = `${PREFIX}/api/scheduler/match/users/by-tags`
+        //const token = getUserInformationFromLocalStorage().accessToken;
+        const response = await axios.get(LOGIN_URL);
+        return response.data
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const startScheduleRecommendUserByEducation = async () => {
+    try {
+        const LOGIN_URL = `${PREFIX}/api/scheduler/match/users/by-education`
+        //const token = getUserInformationFromLocalStorage().accessToken;
+        const response = await axios.get(LOGIN_URL);
+        return response.data
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const startScheduleRecommendUserByExperience = async () => {
+    try {
+        const LOGIN_URL = `${PREFIX}/api/scheduler/match/users/by-experience`
+        //const token = getUserInformationFromLocalStorage().accessToken;
+        const response = await axios.get(LOGIN_URL);
+        return response.data
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+
+
+
 

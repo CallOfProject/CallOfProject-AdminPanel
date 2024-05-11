@@ -16,7 +16,10 @@ import {
     startScheduleCheckStartedCodingInterview,
     startScheduleCheckStartedTestInterview,
     startScheduleCloseExpiredTasks,
-    startScheduleNotifyUsersForTask,
+    startScheduleNotifyUsersForTask, startScheduleRecommendProjects,
+    startScheduleRecommendUserByEducation,
+    startScheduleRecommendUserByExperience,
+    startScheduleRecommendUserByTags,
     startScheduleReminderCodingInterview,
     startScheduleReminderTestInterview
 } from "../../services/SchedulerService";
@@ -113,6 +116,36 @@ const SettingsPageComponent = () => {
             showErrorMessage(toast, "Error", "Expired tasks could not be scheduled")
         }
     };
+    const handleRecommendProjects = async () => {
+        try {
+            showSuccessMessage(toast, "Scheduled Started", await startScheduleRecommendProjects())
+        } catch (e) {
+            showErrorMessage(toast, "Error", "Recommend projects could not be scheduled")
+        }
+    };
+
+
+    const handleUserMatchingByTags = async () => {
+        try {
+            showSuccessMessage(toast, "Scheduled Started", await startScheduleRecommendUserByTags())
+        } catch (e) {
+            showErrorMessage(toast, "Error", "Recommend users by tags could not be scheduled")
+        }
+    };
+    const handleUserMatchingByEducation = async () => {
+        try {
+            showSuccessMessage(toast, "Scheduled Started", await startScheduleRecommendUserByEducation())
+        } catch (e) {
+            showErrorMessage(toast, "Error", "Recommend users by education could not be scheduled")
+        }
+    };
+    const handleUserMatchingByExperience = async () => {
+        try {
+            showSuccessMessage(toast, "Scheduled Started", await startScheduleRecommendUserByExperience())
+        } catch (e) {
+            showErrorMessage(toast, "Error", "Recommend users by experience could not be scheduled")
+        }
+    };
     return (
         <div className="card">
             <Toast ref={toast}/>
@@ -123,7 +156,7 @@ const SettingsPageComponent = () => {
             <Card title="Scheduler Settings" className="settings-container">
                 <Accordion multiple activeIndex={[0]}>
                     <AccordionTab header="Interview Service">
-                        <div className="flex flex-row justify-content-around gap-5">
+                        <div className="flex flex-row justify-space-between gap-5">
                             <Button className="p-button" severity="warning" outlined rounded
                                     onClick={(evt) => handleStartTimeTestBtn()} icon="pi pi-calendar-times"
                                     label="Start Time (Test)"></Button>
@@ -148,7 +181,7 @@ const SettingsPageComponent = () => {
                         </div>
                     </AccordionTab>
                     <AccordionTab header="Project Service">
-                        <div className="flex flex-row justify-content-around gap-5">
+                        <div className="flex flex-row justify-space-between gap-5">
                             <Button className="p-button" severity="info" outlined rounded
                                     onClick={(evt) => handleProjectDeadlineSchedule()} icon="pi pi-calendar-times"
                                     label="Schedule Project Deadline"></Button>
@@ -166,7 +199,7 @@ const SettingsPageComponent = () => {
                         </div>
                     </AccordionTab>
                     <AccordionTab header="Task Service">
-                        <div className="flex flex-row justify-content-evenly gap-5">
+                        <div className="flex flex-row justify-space-between gap-5">
                             <Button className="p-button" severity="help" outlined rounded
                                     onClick={(evt) => handleScheduleNotifyUsers()} icon="pi pi-calendar-times"
                                     label="Schedule Notify User"></Button>
@@ -176,6 +209,34 @@ const SettingsPageComponent = () => {
                                     label="Schedule Expired Tasks"></Button>
                         </div>
                     </AccordionTab>
+
+
+                    <AccordionTab header="Project Recommendation">
+                        <div className="flex flex-row justify-space-between gap-5">
+                            <Button className="p-button" severity="help" outlined rounded
+                                    onClick={(evt) => handleRecommendProjects()} icon="pi pi-calendar-times"
+                                    label="Recommend Projects"></Button>
+                        </div>
+                    </AccordionTab>
+
+
+                    <AccordionTab header="User Recommendation">
+                        <div className="flex flex-row justify-space-between gap-5">
+                            <Button className="p-button" severity="help" outlined rounded
+                                    onClick={(evt) => handleUserMatchingByTags()} icon="pi pi-calendar-times"
+                                    label="Recommend User by Tags"></Button>
+
+                            <Button className="p-button" severity="help" outlined rounded
+                                    onClick={(evt) => handleUserMatchingByEducation()} icon="pi pi-calendar-times"
+                                    label="Recommend User by Education"></Button>
+
+                            <Button className="p-button" severity="help" outlined rounded
+                                    onClick={(evt) => handleUserMatchingByExperience()} icon="pi pi-calendar-times"
+                                    label="Recommend User by Experience"></Button>
+                        </div>
+                    </AccordionTab>
+
+
                 </Accordion>
             </Card>
         </div>

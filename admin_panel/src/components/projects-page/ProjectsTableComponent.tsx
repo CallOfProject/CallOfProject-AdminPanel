@@ -22,7 +22,6 @@ const ProjectsTableComponent = () => {
 
     const fetchData = async () => {
         const projects: ProjectDTO[] = await findAllProjectsByPage()
-        console.log(projects)
         setProjects(projects)
 
     }
@@ -35,8 +34,33 @@ const ProjectsTableComponent = () => {
         return <Button type="button" onClick={() => handleEditProjectBtn(project)} icon="pi pi-pencil" rounded
                        outlined/>
     }
+
+    const getTagSeverity = (project_status: string) => {
+        switch (project_status) {
+            case 'APPLICATION_FEEDBACK_TIMEOUT':
+                return 'danger'
+            case 'CANCELED':
+                return 'danger'
+            case 'EXTEND_APPLICATION_FEEDBACK':
+                return 'info'
+            case 'FAILED':
+                return 'danger'
+            case 'FINISHED':
+                return 'success'
+            case 'IN_PROGRESS':
+                return 'info'
+            case 'NOT_STARTED':
+                return 'warning'
+            case 'TIMEOUT':
+                return 'danger'
+            default:
+                return 'warning'
+        }
+    };
     const projectStatusElement = (project: ProjectDTO) => {
-        return <Tag value={project.project_status} severity="info" style={{fontSize: '10pt'}}/>
+
+        return <Tag value={project.project_status} severity={getTagSeverity(project.project_status)}
+                    style={{fontSize: '10pt'}}/>
     };
 
 
